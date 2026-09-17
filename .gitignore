@@ -1,0 +1,29 @@
+# Configuration backups made by setup-windows.ps1 and by hand.
+# These contain a copy of a real config, which can include API keys.
+config.json.bak-*
+*.bak
+*.bak-*
+
+# Configuration files that hold secrets. The example file is committed
+# on purpose; a real one never is.
+config.json
+.env
+.env.*
+*.key
+*.pem
+
+# Operating system noise
+Thumbs.db
+desktop.ini
+.DS_Store
+._*
+
+# Editors
+.vscode/
+.idea/
+
+# Runtimes, if anyone experiments in this repo
+node_modules/
+__pycache__/
+.venv/
+venv/

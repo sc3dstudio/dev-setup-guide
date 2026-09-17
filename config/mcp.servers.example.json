@@ -1,0 +1,68 @@
+{
+  "_comment": [
+    "EXAMPLE ONLY. Do not copy this file over your real config.",
+    "",
+    "Your real file is: C:\\Users\\<your-name>\\.zcode\\cli\\config.json",
+    "",
+    "JSON has no comments, so this _comment block is just data key that ZCode",
+    "ignores. Delete it once you have what you need.",
+    "",
+    "How to use this file:",
+    "  1. Close ZCode.",
+    "  2. Back up your real config.json.",
+    "  3. Copy ONLY the server objects you want, into the mcp.servers object",
+    "     of your real config.json. Do not replace the whole file - it also",
+    "     holds your model providers and plugin settings.",
+    "  4. Validate the JSON, then reopen ZCode.",
+    "",
+    "Rules that prevent almost every failure:",
+    "  - Forward slashes in paths, never backslashes.",
+    "  - A comma between entries, none after the last one.",
+    "  - Close ZCode before editing; it rewrites this file on exit.",
+    "",
+    "Check the npx path on your machine with:  where.exe npx"
+  ],
+
+  "mcp": {
+    "servers": {
+      "notion": {
+        "type": "stdio",
+        "command": "C:/Program Files/nodejs/npx.cmd",
+        "args": [
+          "-y",
+          "mcp-remote",
+          "https://mcp.notion.com/mcp",
+          "--transport",
+          "http-only"
+        ],
+        "timeoutMs": 60000
+      },
+
+      "blender-fork": {
+        "type": "stdio",
+        "command": "C:/Users/<your-name>/AppData/Local/BlenderMCP/venv-1.16.1/Scripts/blender-mcp.exe",
+        "args": [],
+        "env": {
+          "BLENDER_MCP_DISABLE_TELEMETRY": "1"
+        }
+      },
+
+      "cloudflare-docs": {
+        "type": "stdio",
+        "command": "C:/Program Files/nodejs/npx.cmd",
+        "args": [
+          "-y",
+          "mcp-remote",
+          "https://docs.mcp.cloudflare.com/mcp",
+          "--transport",
+          "http-only"
+        ],
+        "timeoutMs": 120000
+      }
+    }
+  },
+
+  "plugins": {
+    "enabledPlugins": {}
+  }
+}
