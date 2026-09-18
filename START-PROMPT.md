@@ -7,8 +7,8 @@ Paste it into ZCode once, after you have installed ZCode and connected a model. 
 **Before you paste it:**
 
 - [ ] **Computer Use is switched off.** See below — do this first.
-- [ ] ZCode is installed and a model is connected. Asking ZCode *"List the files in the current directory"* gives a real answer.
-- [ ] You have not used an agent before, or you have not used this one.
+- [ ] Setup the DeepSeek Provider and Model
+- [ ] Setup a "Developer" or "Dev" folder wherever you want — e.g. "C:\Users\<Username>\Dev" or any other local drive.
 
 ---
 
@@ -20,9 +20,32 @@ Computer Use lets the agent drive your whole desktop: move the mouse, type, clic
 
 ---
 
+## Setup DeepSeek Prover and Model
+
+**Settings → Model Settings → + Add Provider**
+
+```
+Base URL
+https://api.deepseek.com/anthropic
+
+API format
+Anthropic messages (/v1/messages)
+
+API key
+[Paste the provided key]
+
+Model List
+deepseek-flash
+
+Input Types:
+Text [x], Image [x]
+```
+
+---
+
 ## The prompt
 
-Open ZCode. You do not need a project folder open — the agent creates what it needs. An empty folder is fine.
+CLick "New Task". You do not need a project folder open — the agent creates what it needs. An empty folder is fine.
 
 Copy everything in the box below, paste it into the chat box, and press `Enter`.
 
