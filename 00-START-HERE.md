@@ -125,27 +125,26 @@ There are two:
 ## How the pieces connect
 
 ```
-        you
-         │  describe what you want
-         ▼
-      ┌─────────┐
-      │  ZCode  │  ← the harness: app, chat, permissions
-      └────┬────┘
-           │  sends your request + context
+          You
+           │  describe what you want
            ▼
-      ┌─────────┐
-      │  model  │  ← does the thinking (needs an account)
-      └────┬────┘
-           │  asks for tools
-           ▼
-   ┌───────────────────────────────┐
-   │  agent runs things:           │
-   │   • files in your Dev folder  │
-   │   • terminal commands         │
-   │   • MCP servers (Blender,     │
-   │     Notion)                   │
-   │   • skills (your procedures)  │
-   └───────────────────────────────┘
+      ┌─────────┐                     ┌─────────┐
+      │  ZCode  │  ─ prompt/context ► │  Model  │ ← does the thinking
+      │ (Agent/ |                     | (Brain) |
+      | Harness)│ ◄ asks for tools ─  │         │   (needs an account)
+      └────┬─▲──┘                     └─────────┘
+           │ │
+  executes │ │ returns results
+     tools │ │ (to be sent back to Model)
+           ▼ │
+┌────────────────────────────────┐
+│ Environment:                   │
+│  • files in your Dev folder    │
+│  • terminal commands           │
+│  • MCP servers (Blender,       │
+│    Notion)                     │
+│  • skills (your procedures)    │
+└────────────────────────────────┘
 ```
 
 ---
