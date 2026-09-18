@@ -8,7 +8,7 @@ Paste it into ZCode once, after you have installed ZCode and connected a model. 
 
 - [ ] **Computer Use is switched off.** See below — do this first.
 - [ ] Setup the DeepSeek Provider and Model
-- [ ] Setup a "Developer" or "Dev" folder wherever you want — e.g. "C:\Users\<your-name>\Dev" or any other local drive.
+- [ ] Setup a "Developer" or "Dev" folder wherever you want — e.g. `C:\Users\<your-name>\Dev` or any other local drive.
 
 ---
 
