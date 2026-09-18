@@ -14,19 +14,9 @@ Paste it into ZCode once, after you have installed ZCode and connected a model. 
 
 ## Turn off Computer Use first
 
-A beginner should not start with this switched on.
-
 **Settings → Plugin Management → Installed → Computer Use → switch it off.**
 
 Computer Use lets the agent drive your whole desktop: move the mouse, type, click, read the screen. That is a far bigger permission than editing files in your project, and it is hard to supervise while you are still learning what the agent does and how it reports back.
-
-Nothing in this guide needs it. Turn it on later if you want it, once watching the agent work feels routine.
-
-You can confirm it is off in your config file — `plugins.enabledPlugins` should show:
-
-```json
-"computer-use@zcode-plugins-official": false
-```
 
 ---
 
