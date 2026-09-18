@@ -244,7 +244,8 @@ If your agent tries any of these, stop it:
 2. Close ZCode completely and open it again. This is what loads the new MCP servers and skills.
 3. Ask the agent: *"Which MCP tools do you have?"* Blender and Notion should appear.
 4. If Notion is installed, ask: *"List the Notion pages you can see."* The first call opens a browser for you to approve.
-5. Go to **[03-first-project.md](03-first-project.md)** and build something small.
+5. Start your first working session with the prompt in **[START-PROMPT.md](START-PROMPT.md)**. That prompt installs nothing — it orients the agent, tells it you are new, and sets up how you two will work together.
+6. Then go to **[03-first-project.md](03-first-project.md)** and build something small.
 
 **If something is broken**, the agent will have left a report. Compare it with [CHECKLIST.md](CHECKLIST.md) to find the step that did not land, then read [reference/troubleshooting.md](reference/troubleshooting.md).
 

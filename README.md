@@ -46,7 +46,13 @@ You install ZCode and connect a model. Then you paste one prompt into ZCode and 
 
 > Both tracks end in the same place, and both use the same script (`scripts/setup-windows.ps1`). Track B is just Track A with the agent holding the keyboard.
 
-After either track, do **[03-first-project.md](03-first-project.md)** to build something small and prove the whole chain works.
+### Then: your first session
+
+Once the setup is finished and a model is connected, paste the prompt in **[START-PROMPT.md](START-PROMPT.md)**.
+
+It is the first thing you give the agent, and it is not the setup prompt. It installs nothing. It gets the agent oriented, tells it you are new to this, agrees on how you want to work, writes your instruction file, and proposes one small thing to build. Without it, a fresh agent assumes you are an experienced developer and behaves accordingly.
+
+After that, do **[03-first-project.md](03-first-project.md)** to build something small and prove the whole chain works.
 
 ---
 
@@ -89,6 +95,7 @@ An agent is not allowed to do these for you, and you should not let one. If an a
 
 ```
 README.md                     you are here
+START-PROMPT.md               the first prompt you paste into ZCode
 00-START-HERE.md              plain-word explanation of every piece
 01-human-setup.md             Track A — do it by hand
 02-agent-setup.md             Track B — your agent does it

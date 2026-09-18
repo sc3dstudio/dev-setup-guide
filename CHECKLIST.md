@@ -188,7 +188,17 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-setup.ps1
 
 ---
 
-## 10. Prove it works end to end
+## 10. First working session
+
+- [ ] Pasted the prompt from [START-PROMPT.md](START-PROMPT.md) into a fresh ZCode session
+- [ ] The agent reported what it can do, and which MCP tools it has — **without installing anything**
+- [ ] It asked the four questions one at a time
+- [ ] It showed you your `AGENTS.md` content before saving it
+- [ ] You approved one small first project
+
+---
+
+## 11. Prove it works end to end
 
 - [ ] A repo exists on GitHub that you created yourself
 
@@ -209,7 +219,7 @@ Full walkthrough with explanations: [03-first-project.md](03-first-project.md).
 
 ---
 
-## 11. Habits, from day one
+## 12. Habits, from day one
 
 - [ ] I open **one project folder**, not the whole `Dev` folder
 - [ ] I run `git diff` before every commit
