@@ -111,9 +111,39 @@ A green report from the agent and a working program are two different things. On
 
 ---
 
+## Let it handle the routine
+
+Your agent knows more about this than you do — that is the point of having one. Do not turn it into a permission machine by approving every small thing.
+
+**The agent's job, without asking you each time:**
+
+| It does this | Because |
+|---|---|
+| Installs the toolchain and ordinary project dependencies | It cannot work properly without them, and `winget` and package managers are built for exactly this |
+| Commits each working step with a clear message | Small commits are the undo button. Waiting for your approval makes them rare and large |
+| Pushes a finished step to your repo | That is your backup. It should happen on its own |
+| Creates folders, files and branches it needs | Routine work, and reversible with Git |
+
+**Say what you are installing and why in one line** — that is the level of reporting you want. Not a permission request.
+
+**Where you do want to be asked:**
+
+- Anything that needs your **account login, a credential, or money**. Those are yours.
+- Anything that would **overwrite or delete** without a clear way back.
+- Anything that would **change a part of the setup that already works**. "While I was in there" is how a working machine breaks.
+- An install that would **replace a tool you already rely on**.
+
+The test is not "is this risky in theory". It is "if this goes wrong, can I get back to where I was?" If yes, let the agent work. If no, you are in the loop.
+
+---
+
 ## Committing
 
-**Commit after every working step.** Not at the end of the day. If the next step breaks something, you return to the last working commit and lose five minutes instead of five hours.
+**Your agent commits. Your job is to read what it committed.**
+
+Commit after every working step, not at the end of the day. If the next step breaks something, you return to the last working commit and lose five minutes instead of five hours.
+
+You should still know the commands, because you will want them yourself:
 
 ```powershell
 git status          # what changed
@@ -122,7 +152,9 @@ git add .           # stage everything
 git commit -m "Add live search filter to the header"
 ```
 
-**Write messages that say what and why:**
+**Read the `git diff` before you accept a step as done.** That is the one habit that matters most, and it is the thing the agent cannot do for you — it cannot tell you whether it built what you actually wanted.
+
+**Messages should say what and why:**
 
 ```
 Good:  Add live search filter to the header
@@ -131,7 +163,7 @@ Bad:   stuff
 Bad:   fixed it finally
 ```
 
-Future-you will read these to find the moment something broke.
+Future-you will read these to find the moment something broke. If the agent writes vague messages, tell it once — ground rule 4 in your `AGENTS.md` covers it.
 
 ### When a step goes wrong
 
@@ -173,7 +205,7 @@ Before you close a session, commit. The next session should start from a clean, 
 ## Project rules
 
 - The API base URL lives in `config.js`. Never hard-code it elsewhere.
-- Do not add dependencies without asking. This project stays dependency-free.
+- Do not reformat lines you are not otherwise changing. It makes the diff unreadable.
 - The client's brand colour is #C8102E. Do not invent new colours.
 ```
 
@@ -197,7 +229,7 @@ An agent with permission can run any command it wants in your project folder.
 | `git push --force` | Rewrites published history. Destroys other people's work too |
 | Anything with "delete", "remove", "drop", "purge" | Read twice |
 | Sending data to an external service | It leaves your machine, and may be cached or indexed |
-| Installing a package | Adds code by unknown authors to your project |
+| A package you cannot explain | Standard tooling is the agent's job, but you should still know what is being added |
 
 **Secrets.** An API key or password must never enter a file you commit. If you need one, it goes in an environment variable or a file listed in `.gitignore`. If you ever commit a secret, treat it as leaked: rotate the key immediately. Deleting the commit is not enough, because it stays in the history.
 

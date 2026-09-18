@@ -340,7 +340,23 @@ An agent that cannot produce the output has not verified anything.
 
 ### The agent wants to install a package or tool
 
-Reasonable to allow for common packages. Read what it is first. Fewer dependencies means fewer things that can break, and every dependency is code by someone else running on your machine.
+Let it, for standard tooling and ordinary project dependencies. Approving each one wastes the reason you have an agent, and it cannot work properly without them.
+
+Two things worth stopping for: an install that needs **your account, a credential, or money**, and an install that would change something **already working**.
+
+If a package appears that you did not expect and the agent cannot justify in one sentence, ask what it is for. Every dependency is code by someone else running on your machine, so "yes" to everything is not the answer either.
+
+### It asks permission for every small thing
+
+It has not taken ground rule 5 on board. Say:
+
+```
+Ground rule 5 - standard tooling is yours to install. Say what you are installing
+and why in one line, then do it. Ask me only for things that need my account or a
+credential, or that would change something already working.
+```
+
+If it keeps doing it, check that your `AGENTS.md` actually contains the Tooling section. A rule stated once in a chat does not survive a new session; a rule in `AGENTS.md` does.
 
 ### The agent asks for a permission and I do not understand it
 

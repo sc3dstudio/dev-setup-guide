@@ -2,7 +2,7 @@
 
 A complete setup guide for a Windows computer that you will use to build software with an AI agent ("vibecoding").
 
-You do not need to be a programmer to use this. You need to be able to copy and paste commands, read what the screen tells you, and stop when something looks wrong.
+You do not need to be a developer to use this. You need to be able to copy and paste commands, read what the screen tells you, and stop when something looks wrong. If you already know basic programming words, you are more than ready.
 
 **Time needed:** 45-60 minutes. Most of it is waiting for downloads.
 
@@ -10,9 +10,7 @@ You do not need to be a programmer to use this. You need to be able to copy and 
 
 ## What this guide does
 
-It turns a normal Windows computer into a working development machine:
-
-| It installs | So that |
+| It sets up | So that |
 |---|---|
 | Git, Node.js, Python, uv, GitHub CLI | the basic tools every project needs |
 | ZCode | you have an agent that can read, write and run code for you |
@@ -20,39 +18,61 @@ It turns a normal Windows computer into a working development machine:
 | MCP servers | your agent can reach Blender and Notion, not just files |
 | Skills | your agent learns repeatable jobs instead of you re-explaining them |
 
-At the end you will have a working setup, and you will know how to check that it still works.
+At the end you have a working setup, and you know how to check that it still works.
+
+---
+
+## Turn off Computer Use first
+
+**Do this before you give the agent any prompt.** It takes ten seconds and it matters.
+
+**Settings → Plugin Management → Installed → Computer Use → switch it off.**
+
+Computer Use lets the agent drive your whole desktop: move the mouse, type, click, read the screen. That is a much bigger permission than editing files in a project folder, and it is hard to supervise while you are still learning what the agent does and how it reports back.
+
+Nothing in this guide needs it. Turn it on later if you want it, once watching the agent work feels routine.
+
+You can confirm it is off in your config file — `plugins.enabledPlugins` should show:
+
+```json
+"computer-use@zcode-plugins-official": false
+```
+
+Also on the list in [CHECKLIST.md](CHECKLIST.md), as step 10.
 
 ---
 
 ## Two ways to do this — pick one
 
-The guide is written twice, on purpose. The steps are the same. The difference is who does them.
+The steps are the same either way. The difference is who does them.
 
 ### Track A — you do it by hand
 
 Follow **[01-human-setup.md](01-human-setup.md)**.
 
-You run every command yourself. This is slower, but you will understand what is on your machine and why.
+You run every command yourself. Slower, but you will understand what is on your machine and why.
 
-**Choose this if** you have never installed a development tool before, or you want to learn what the pieces are.
+**Choose this if** you have never installed a development tool, or you want to know what each piece is before you trust an agent with it.
 
 ### Track B — your agent does it
 
-Follow **[02-agent-setup.md](02-agent-setup.md)**.
+Follow **[START-PROMPT.md](START-PROMPT.md)**.
 
-You install ZCode and connect a model. Then you paste one prompt into ZCode and its agent does the rest, checking each step as it goes.
+You install ZCode and connect a model. Then you paste one prompt, and the agent installs the toolchain, creates your `Dev` folder, configures the MCP servers, writes your instruction file, and proposes a small first project.
 
-**Choose this if** you want to get to building quickly, or you already did Track A once and are setting up a second machine.
+**Choose this if** you want to get to building quickly, or you are setting up a second machine.
 
-> Both tracks end in the same place, and both use the same script (`scripts/setup-windows.ps1`). Track B is just Track A with the agent holding the keyboard.
+The detailed runbook behind that prompt — what the agent does at each step, and where it must stop and wait for you — is [02-agent-setup.md](02-agent-setup.md). You do not need to read it first, but it is what to check against when something looks off.
 
-### Then: your first session
+> Both tracks end in the same place and use the same script, `scripts/setup-windows.ps1`. Track B is Track A with the agent holding the keyboard.
 
-Once the setup is finished and a model is connected, paste the prompt in **[START-PROMPT.md](START-PROMPT.md)**.
+---
 
-It is the first thing you give the agent, and it is not the setup prompt. It installs nothing. It gets the agent oriented, tells it you are new to this, agrees on how you want to work, writes your instruction file, and proposes one small thing to build. Without it, a fresh agent assumes you are an experienced developer and behaves accordingly.
+## After the setup — both tracks
 
-After that, do **[03-first-project.md](03-first-project.md)** to build something small and prove the whole chain works.
+Do **[03-first-project.md](03-first-project.md)**. It builds something small end to end, with every command explained, so you have done the whole loop once: the agent changes something, you check it, you commit it.
+
+Then read **[04-daily-workflow.md](04-daily-workflow.md)** — how to prompt well, what to check before you trust a change, when to commit, and how to undo.
 
 ---
 
@@ -78,6 +98,8 @@ Almost everything here is automated. Two steps cannot be, because they need a hu
 
 An agent is not allowed to do these for you, and you should not let one. If an agent offers to type your password, stop.
 
+Everything else — the toolchain, the MCP servers, the config, the skills — an agent can and should do for you.
+
 ---
 
 ## Before you start
@@ -95,10 +117,10 @@ An agent is not allowed to do these for you, and you should not let one. If an a
 
 ```
 README.md                     you are here
-START-PROMPT.md               the first prompt you paste into ZCode
+START-PROMPT.md               Track B — the one prompt you paste
 00-START-HERE.md              plain-word explanation of every piece
 01-human-setup.md             Track A — do it by hand
-02-agent-setup.md             Track B — your agent does it
+02-agent-setup.md             the runbook behind the prompt
 03-first-project.md           build a small thing to prove it works
 04-daily-workflow.md          how to actually work, day to day
 CHECKLIST.md                  tick-box list

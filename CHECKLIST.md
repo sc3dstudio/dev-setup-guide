@@ -91,6 +91,7 @@ gh auth status
 
 - [ ] Downloaded from `https://zcode.z.ai` and installed
 - [ ] Opened, onboarding completed
+- [ ] **Computer Use switched off** — see step 10
 - [ ] A model connected (bottom-left corner shows a model, not a **Connect** button)
 - [ ] It answered this correctly:
 
@@ -188,17 +189,38 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-setup.ps1
 
 ---
 
-## 10. First working session
+## 10. Turn off Computer Use
 
-- [ ] Pasted the prompt from [START-PROMPT.md](START-PROMPT.md) into a fresh ZCode session
-- [ ] The agent reported what it can do, and which MCP tools it has — **without installing anything**
-- [ ] It asked the four questions one at a time
-- [ ] It showed you your `AGENTS.md` content before saving it
-- [ ] You approved one small first project
+Do this **before** you give the agent any prompt.
+
+- [ ] In ZCode: **Settings → Plugin Management → Installed → Computer Use → off**
+- [ ] Confirmed in the config:
+
+```powershell
+(Get-Content "$env:USERPROFILE\.zcode\cli\config.json" -Raw | ConvertFrom-Json).plugins.enabledPlugins
+```
+
+- [ ] It shows `computer-use@zcode-plugins-official` as `False`
+
+**Why:** Computer Use lets the agent drive your whole desktop — mouse, keyboard, screen. That is far wider than editing files in a project folder, and hard to supervise while you are still learning how the agent behaves. Nothing in this guide needs it. You can turn it back on later.
 
 ---
 
-## 11. Prove it works end to end
+## 11. First working session
+
+- [ ] Pasted the prompt from [START-PROMPT.md](START-PROMPT.md) into a fresh ZCode session
+- [ ] Step 1: it **installed** anything missing (not just reported it), then showed a version table
+- [ ] Step 2: `Dev` folder exists, and you got a straight answer about OneDrive
+- [ ] Step 3: it backed up `config.json`, merged `notion` in, and asked you to close and reopen ZCode
+- [ ] It asked the four questions **one at a time**
+- [ ] It showed you your `AGENTS.md` content before saving it
+- [ ] You approved one small first project
+
+**If the agent only lists missing tools and installs nothing**, it did not follow the prompt. Tell it: *"Ground rule 5 — standard tooling is yours to install, just say what you are doing in one line."*
+
+---
+
+## 12. Prove it works end to end
 
 - [ ] A repo exists on GitHub that you created yourself
 
@@ -219,11 +241,12 @@ Full walkthrough with explanations: [03-first-project.md](03-first-project.md).
 
 ---
 
-## 12. Habits, from day one
+## 13. Habits, from day one
 
 - [ ] I open **one project folder**, not the whole `Dev` folder
 - [ ] I run `git diff` before every commit
-- [ ] I commit after every working step, not at the end of the day
+- [ ] I let the agent commit each working step, and I read what it committed
+- [ ] I let the agent install standard tooling without asking me each time
 - [ ] I read permission prompts before approving
 - [ ] I know that `git reset --hard` and `git push --force` destroy work, and I do not run them on an agent's suggestion alone
 - [ ] I keep API keys and passwords out of anything that goes into a repo
@@ -231,13 +254,13 @@ Full walkthrough with explanations: [03-first-project.md](03-first-project.md).
 
 ---
 
-## The three human-only steps
+## What the agent does for you, and what it must not
 
-No agent can do these, and none should try:
+**Yours to keep:** installing ZCode, and every browser sign-in. No agent can do those, and none should try.
 
-1. Installing ZCode — it is a GUI wizard.
-2. Signing in — GitHub, your model provider, Notion. Each opens a browser.
-3. Approving anything in a browser.
+**The agent's job:** the toolchain, the Dev folder, the MCP configuration, the skills, and your commits. Let it do them — approving each one wastes the reason you have an agent.
+
+**Where it must stop and ask:** anything that deletes or overwrites without a way back, anything needing your account or a credential, anything that costs money, and anything that would change a part of the setup that already works.
 
 ---
 
@@ -260,4 +283,4 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-setup.ps1
 
 The script is safe to run twice. It skips what is already there, and it backs up your ZCode config before touching it.
 
-**Or paste the agent prompt** from [02-agent-setup.md](02-agent-setup.md) and let the agent do the same steps while you watch.
+**Or paste the prompt** from [START-PROMPT.md](START-PROMPT.md) and let the agent do all of it while you watch. On a second machine, that is usually the faster route.

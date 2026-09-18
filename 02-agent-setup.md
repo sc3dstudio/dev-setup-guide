@@ -1,12 +1,20 @@
-# Track B — Let your agent do the setup
+# The setup runbook — what the agent does, in detail
 
-You install ZCode and connect a model. Then you paste one prompt, and the agent installs and checks everything else.
+This is the manual behind the prompt. It is **not** the prompt you paste.
+
+**If you are setting up a machine from scratch, use [START-PROMPT.md](START-PROMPT.md).** That prompt does everything here, plus it agrees with you how you will work together. It is the one to paste on a first machine.
+
+Read this file when:
+
+- you want to see exactly what the agent will do before you let it, or
+- something in the setup looks wrong and you need to check it against the intended steps, or
+- you only want the machine configured and already have your working rules sorted — then paste the setup-only prompt in [section 2](#2-the-setup-only-prompt) below.
 
 This file has three parts:
 
 1. **[Before you paste](#1-before-you-paste)** — the two things you must do yourself first.
-2. **[The prompt](#2-the-prompt)** — copy this into ZCode. This is the whole interface.
-3. **[The runbook](#3-the-runbook-the-agent-follows)** — what the agent will actually do. Read it so nothing surprises you.
+2. **[The setup-only prompt](#2-the-setup-only-prompt)** — installs and configures, and stops there.
+3. **[The runbook](#3-the-runbook-the-agent-follows)** — what the agent will actually do, phase by phase.
 
 ---
 
@@ -16,6 +24,7 @@ The agent cannot do these two things, because both need a human at a keyboard.
 
 - [ ] **ZCode is installed and open.** See [01-human-setup.md](01-human-setup.md) Step 7.
 - [ ] **A model is connected**, and asking ZCode *"List the files in the current directory"* gives a real answer. See [01-human-setup.md](01-human-setup.md) Step 8.
+- [ ] **Computer Use is switched off.** See the top of [README.md](README.md).
 
 Without a connected model there is no agent, and there is nothing to paste a prompt into.
 
@@ -30,9 +39,11 @@ You will be asked these. Have the answers ready.
 
 ---
 
-## 2. The prompt
+## 2. The setup-only prompt
 
-Open ZCode. Make sure you are in a folder inside your `Dev` directory — or in no folder at all, which is fine too.
+Use this instead of the start prompt when the machine needs configuring but your working rules are already in place — a second machine, or a rebuild.
+
+Open ZCode. You do not need a project folder open.
 
 Copy everything in the box below and paste it into the chat box. Then press `Enter` and let it work.
 
@@ -55,21 +66,24 @@ GROUND RULES
 3. Before any command that deletes, overwrites, or moves files, say what you are about
    to do and why, and wait for my "yes".
 4. Never edit an existing configuration file without making a backup copy first.
-5. Never put a password, API key or token into a file that goes into a Git repo.
-6. After installing a tool, a NEW terminal is needed for it to be on PATH. Either open
+5. After installing a tool, a NEW terminal is needed for it to be on PATH. Either open
    a new shell or refresh PATH from the registry. Do not conclude an install failed
    just because the current shell cannot see the command.
-7. If a step fails and you cannot fix it after two attempts, STOP. Report what you tried,
+6. If a step fails and you cannot fix it after two attempts, STOP. Report what you tried,
    the exact error text, and what you need from me. Do not guess and continue.
-8. Explain in plain language what each tool is for the first time you install it.
-   I am new to this. Assume I do not know what "PATH" or "package manager" means.
+7. I know basic programming terminology, so use words like function, commit, branch and
+   repo normally. Explain anything specific to this tooling the first time you use it,
+   in one short sentence: provider, MCP, session, turn, harness, token. And explain what
+   each tool is for the first time you install it.
 
 PHASES — do them in this order
 
-Phase 0 — Recon (change nothing)
+Phase 0 — Recon, then continue
   Report: Windows version, whether winget works, and which of these already exist:
   git, node, npm, python, uv, gh, rg.
-  Show me the result before you install anything.
+  Then go straight on to Phase 1. Do NOT wait for my approval to install standard
+  tooling. Stop and tell me only if something unexpected turns up: winget missing,
+  a tool present but broken, or a version old enough to change the plan.
 
 Phase 1 — Install the missing tools with winget
   Git.Git | OpenJS.NodeJS.LTS | Python.Python.3.12 | astral-sh.uv |
@@ -231,7 +245,7 @@ If your agent tries any of these, stop it:
 | Disable Windows Defender, the firewall, or a security setting | Fix the actual problem instead |
 | Force-push, or rewrite Git history | Destroys work with no way back |
 | Set `ExecutionPolicy` to `Unrestricted` permanently | The setup only needs `Bypass` for one window, one time |
-| Store an API key in a file inside a repo | It will be published the moment you push |
+| Invent a Git name or email instead of asking you | Every commit you ever make carries that address |
 
 ---
 

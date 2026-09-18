@@ -1,60 +1,128 @@
 # Start prompt — the first thing to paste into ZCode
 
-This is the prompt for your **first working session**, after the setup is done.
+This is the prompt for your **first session**. It sets the machine up *and* starts you working.
 
-It is not the setup prompt. The setup prompt installs things — that is [02-agent-setup.md](02-agent-setup.md). This one installs nothing. It gets the agent and you oriented, agrees on how you want to work, and picks a first small thing to build.
+Paste it into ZCode once, after you have installed ZCode and connected a model. It takes care of the rest: the toolchain, your Dev folder, the MCP servers, your instruction file, and one small first project.
 
-**Use this when:**
+**Before you paste it:**
 
-- [ ] ZCode is installed and a model is connected
-- [ ] The setup is finished (either track), or you believe it is
-- [ ] You have not worked with this agent before
+- [ ] **Computer Use is switched off.** See below — do this first.
+- [ ] ZCode is installed and a model is connected. Asking ZCode *"List the files in the current directory"* gives a real answer.
+- [ ] You have not used an agent before, or you have not used this one.
 
-If the setup is not done yet, go to [02-agent-setup.md](02-agent-setup.md) first.
+---
+
+## Turn off Computer Use first
+
+A beginner should not start with this switched on.
+
+**Settings → Plugin Management → Installed → Computer Use → switch it off.**
+
+Computer Use lets the agent drive your whole desktop: move the mouse, type, click, read the screen. That is a far bigger permission than editing files in your project, and it is hard to supervise while you are still learning what the agent does and how it reports back.
+
+Nothing in this guide needs it. Turn it on later if you want it, once watching the agent work feels routine.
+
+You can confirm it is off in your config file — `plugins.enabledPlugins` should show:
+
+```json
+"computer-use@zcode-plugins-official": false
+```
 
 ---
 
 ## The prompt
 
-Open ZCode. Open your `Dev` folder, or a project inside it — or open nothing at all, which is fine for a first session.
+Open ZCode. You do not need a project folder open — the agent creates what it needs. An empty folder is fine.
 
 Copy everything in the box below, paste it into the chat box, and press `Enter`.
 
 ---
 
 ```text
-Hello. I am new to this. You are my coding agent on this Windows machine, and
-this is our first session together.
+Hello. You are my coding agent on this Windows machine, and this is our first
+session together.
 
-I may not know the right words for things. Please explain in plain language.
+I have not worked with an agent before. I do know basic programming
+terminology, so use words like function, commit, branch, API, dependency and
+repo normally. But explain anything specific to this tooling the first time you
+use it, in one short sentence: provider, MCP, session, turn, harness, skill,
+token, worktree.
 
-GROUND RULES — follow these in every reply, not just today
+GROUND RULES - follow these in every reply, not just today
 
-1.  Assume I know nothing about programming. Explain any jargon the first time
-    you use it, in one short sentence.
-2.  One step at a time. Do not make changes I did not ask for, even small ones.
+1.  Explain tool-specific vocabulary the first time you use it. Do not explain
+    general programming words to me.
+2.  One thing at a time. Do not change things I did not ask about.
 3.  Before anything that deletes, overwrites or moves files, say what you are
-    about to do and wait for my "yes".
-4.  Never commit or push to Git unless I ask.
-5.  Never put a password, API key or token into a file that could be committed.
-6.  Do not install or upgrade anything today. Today is about getting oriented.
-7.  If you are unsure, say so. Never present a guess as a fact.
-8.  After a change, tell me what you changed and why, in plain language.
-9.  If my request is unclear, ask one question instead of guessing.
-10. If I ask what something does, answer without code if you can.
+    about to do and wait for my yes.
+4.  Take care of Git yourself. Commit your own work in small steps with clear
+    messages, and tell me what you committed. Do not wait for me to ask.
+5.  Install what you need in order to work properly - runtimes, CLI tools, MCP
+    servers, project dependencies. Say what you are installing and why in one
+    line, then do it. You do not need my approval for standard tooling. Ask me
+    only when an install needs an account login, costs money, or needs a
+    credential from me.
+6.  If you are unsure, say so. Never present a guess as a fact.
+7.  After a change, tell me what you changed and why, in plain language.
+8.  If my request is unclear, ask one question instead of guessing.
+9.  If I ask what something does, answer without code if you can.
 
-STEP 1 - Orientation. Change nothing.
+Work through the steps in order. Stop wherever I have to answer something, and
+do not start a step before the previous one is finished.
 
-  - Tell me which folder you can currently see.
-  - List what you are able to do: which tools you have, and whether you have any
-    MCP tools. If you have MCP tools, group them by server name.
-  - Tell me specifically whether Blender and Notion appear.
-  - Report which of these exist on this machine: git, node, npm, python, uv, gh.
-    Do not install any that are missing.
+STEP 1 - Get the machine ready. Fix what is missing, do not just report it.
 
-  Show me all of that, then STOP and wait for me.
+  Check for each of these, and install anything missing with winget:
+    git, node (includes npm), python, uv, gh, ripgrep
 
-STEP 2 - Read the guide this machine was set up with.
+  Things that will bite you:
+    - On Windows the command is `python`, never `python3`.
+    - After an install, the current shell still has the old PATH. Refresh PATH
+      or open a new shell before checking, and do not conclude an install
+      failed just because this shell cannot see the command yet.
+    - If winget itself is missing, tell me and stop.
+
+  The detailed runbook for this step, with exact commands and verification, is:
+    https://raw.githubusercontent.com/sc3dstudio/dev-setup-guide/main/02-agent-setup.md
+
+  Then show me a table: each tool, its version, and whether you installed it or
+  it was already there.
+
+STEP 2 - Give my projects one home.
+
+  Default: %USERPROFILE%\Dev, with a _sandbox subfolder inside it for throwaway
+  experiments.
+
+  Check whether my home folder is synced by OneDrive. If it is, say in one
+  sentence why code should not live inside it, and use a path outside OneDrive
+  instead.
+
+STEP 3 - MCP servers. This is how you get abilities beyond reading files.
+
+  My ZCode config is %USERPROFILE%\.zcode\cli\config.json. MCP servers live under
+  the NESTED key mcp.servers.
+
+  Rules for editing it:
+    - Back the file up first, to config.json.bak-<timestamp>.
+    - Merge. Never replace the file, and never overwrite a server that is
+      already configured.
+    - JSON is strict: no trailing commas, no comments, and forward slashes in
+      every Windows path.
+    - Ask me to CLOSE ZCode while you edit it. ZCode rewrites this file when it
+      exits, so an edit made while it is open can be lost.
+
+  Register what is missing:
+    - notion   - Notion pages and databases. It needs a browser sign-in from me
+                 the first time it connects. Set it up, then tell me exactly
+                 what to click.
+    - blender  - ONLY if I tell you I use Blender, and it also needs a Blender
+                 add-on installed. Ask me before doing this one.
+
+  Then: ask me to reopen ZCode, and confirm with me that the servers connected.
+  If you cannot check that yourself, tell me how to check it.
+
+STEP 4 - Read the guide this machine was set up with.
+
   Fetch and read:
     https://raw.githubusercontent.com/sc3dstudio/dev-setup-guide/main/00-START-HERE.md
     https://raw.githubusercontent.com/sc3dstudio/dev-setup-guide/main/04-daily-workflow.md
@@ -62,39 +130,33 @@ STEP 2 - Read the guide this machine was set up with.
   Then summarise in 5 bullet points how you and I should work together, based on
   what you read. Ask me if anything there does not match how I want to work.
 
-STEP 3 - If something is missing.
-  If STEP 1 showed that git, node, npm, python, uv or gh is missing, do NOT
-  install it now. Tell me which ones are missing, and give me this link to the
-  setup prompt instead:
-    https://github.com/sc3dstudio/dev-setup-guide/blob/main/02-agent-setup.md
-  Then wait for me.
-
-STEP 4 - Ask me these questions, ONE at a time, and wait for each answer.
+STEP 5 - Ask me these questions, ONE at a time, and wait for each answer.
   - What language should you answer me in?
-  - What do I want to build first? "I do not know yet" is a completely fine answer.
+  - What do I want to build first? "I do not know yet" is a complete answer.
   - Have I used Git before?
   - Do I want you to explain a command before you run it, or just run it?
 
-STEP 5 - Write my instructions file.
-  Using my answers from STEP 4, write my global agent instructions to:
+STEP 6 - Write my instruction file, so these rules survive past today.
+
+  Using my answers from STEP 5, write my global agent instructions to:
     %USERPROFILE%\.zcode\AGENTS.md
 
-  Use this file as the starting point:
+  Start from this file, keep it short, and delete anything that does not apply
+  to me:
     https://raw.githubusercontent.com/sc3dstudio/dev-setup-guide/main/config/AGENTS.md
 
-  Keep it short. Remove anything that does not apply to me. Show me the exact
-  content before you save it and wait for my OK.
+  Show me the exact content before you save it, and wait for my OK.
 
-STEP 6 - Propose a first project.
+STEP 7 - Propose a first project.
+
   Suggest ONE small thing we can build together in under 30 minutes, inside my
-  Dev folder, that teaches me the basic loop: you change something, I check it,
-  we commit it.
+  Dev folder, that teaches me the loop: you change something, I check it, we
+  commit it.
 
   Not a tutorial and not a toy. Something real but small. Tell me why you picked
-  it, and what I will have at the end. Then wait for my yes.
+  it and what I will have at the end. Then wait for my yes.
 
-Begin with STEP 1 now. Do not skip ahead, and do not start any step until I have
-answered the one before it.
+Start with STEP 1 now.
 ```
 
 ---
@@ -103,37 +165,60 @@ answered the one before it.
 
 | Step | You should see |
 |---|---|
-| 1 | A list of what the agent can do, its MCP tools grouped by server, and which tools exist. **Nothing installed.** |
-| 2 | Five bullet points about how to work together, and a question back to you |
-| 3 | Either "nothing is missing", or a short list plus the setup link |
-| 4 | Four questions, one at a time — not all at once |
-| 5 | The proposed `AGENTS.md` content, before it writes anything |
-| 6 | One small project idea with a reason, waiting for your go-ahead |
+| 1 | Missing tools installed via winget, then a table of versions. Nothing is merely reported — gaps get closed. |
+| 2 | A `Dev` folder, and a straight answer about OneDrive |
+| 3 | Your config backed up, `notion` added, the file validated, and a request to close and reopen ZCode |
+| 4 | Five bullet points about how to work together, and a question back to you |
+| 5 | Four questions, one at a time — not all at once |
+| 6 | The proposed `AGENTS.md` content, before it writes anything |
+| 7 | One small project idea with a reason, waiting for your go-ahead |
 
-**Then you say yes, and you are working.**
+**Steps 1 and 3 are the ones to watch.** If step 1 only lists what is missing and installs nothing, the agent has not followed the prompt — tell it to install them. If step 3 edits the config while ZCode is open, or without a backup, stop it.
+
+**You will be asked twice to close and reopen ZCode.** That is not busywork: MCP servers and skills are only read at startup, and ZCode overwrites its config on exit.
 
 ---
 
 ## What it should not do
 
-Stop it if it does any of these. They mean the prompt was not read carefully.
+Stop it if it does any of these.
 
 | It should not | Why |
 |---|---|
-| Install or upgrade anything | The setup prompt does that, and it is a deliberate, separate step |
-| Write files before you approve them | Step 5 says show first |
-| Ask all four questions at once | They come one at a time, so each gets a real answer |
-| Create a Git repo or commit anything | You did not ask |
-| Skip to building | Step 6 ends with a proposal, not an action |
-| Answer in a language you did not ask for | Question one in Step 4 decides that |
+| Report missing tools and stop there | Step 1 says fix, not report |
+| Edit the ZCode config while ZCode is running | ZCode overwrites it on exit — the edit is lost |
+| Edit the config without backing it up first | You would have no way back |
+| Replace the config file instead of merging | It holds your model providers and other settings |
+| Install Blender's MCP without asking | It needs a Blender add-on, and you may not use Blender at all |
+| Write `AGENTS.md` before showing you | Step 6 says show first, then wait |
+| Ask all four questions at once | They come one at a time so each gets a real answer |
+| Skip to building | Step 7 ends with a proposal, not an action |
+
+---
+
+## If something goes wrong
+
+| Symptom | What to do |
+|---|---|
+| It asks permission for every single install | Tell it: *"Ground rule 5 — standard tooling is yours to install, just say what you are doing in one line."* |
+| It says a tool is missing although you know it is installed | It checked in the shell it installed from, before refreshing PATH. Tell it to open a new shell or re-read PATH, then check again. |
+| Everything in the config disappeared | The JSON broke. Restore the newest `config.json.bak-*` next to it. |
+| Notion shows as connected but returns nothing | The browser sign-in was not finished. Ask it to list Notion pages — a browser should open. |
+| It stops at step 3 and waits | Expected. Reopen ZCode, then tell it to continue with step 4. |
+
+More: [reference/troubleshooting.md](reference/troubleshooting.md).
 
 ---
 
 ## Why this prompt exists
 
-A fresh agent does not know that you are new, what you want to build, or how much explanation you want. Without being told, it will assume you are an experienced developer and behave accordingly — terse answers, unexplained commands, large changes.
+Two problems, one paste.
 
-This prompt fixes that in one paste. The ground rules in it are the same ones in [config/AGENTS.md](config/AGENTS.md), so once Step 5 is done they are permanent and you never have to paste them again.
+**A fresh agent does not know who you are.** Not that you are new to agents, not what you want to build, not how much explanation you want. Left alone it assumes an experienced developer and behaves accordingly — terse answers, unexplained jargon, large changes. The ground rules and steps 4 to 6 fix that.
+
+**A fresh machine is not a working machine.** Something is always missing, and an agent that only *reports* a missing tool has not done the job. Step 1 and step 3 make it install and configure, which is what you actually want an agent for.
+
+Step 6 is the part that lasts. The ground rules you paste today get written into `AGENTS.md`, which is loaded into every future session — so you never paste them again.
 
 ---
 
@@ -141,15 +226,22 @@ This prompt fixes that in one paste. The ground rules in it are the same ones in
 
 Edit the prompt before you paste it. It is plain text and it is yours.
 
-The two lines worth changing:
+Worth changing:
 
 - **The ground rules.** Delete what you do not want. Add what you do — for example *"always show me the diff before committing"*.
-- **Step 6.** If you already know what you want to build, replace the suggestion request with your actual idea. That is faster and the agent will pick a better first step.
+- **Step 1's tool list.** Trim it to what you actually need.
+- **Step 7.** If you already know what you want to build, replace the suggestion request with your actual idea. The agent will pick a better first step for a real goal.
+
+---
+
+## The setup-only prompt
+
+If you have already set up the working relationship and only want the machine configured — a second machine, say — use the prompt in [02-agent-setup.md](02-agent-setup.md) instead. It covers steps 1 to 3 above with much more detail, and stops there.
 
 ---
 
 ## Next
 
-**[03-first-project.md](03-first-project.md)** — a full walkthrough of building something small, end to end, with explanations of every command. Do that before you start your own project, if you have not already.
+**[03-first-project.md](03-first-project.md)** — a full walkthrough of building something small, end to end, with every command explained. Do that before your own project if you have not already.
 
-**[04-daily-workflow.md](04-daily-workflow.md)** — the habits that make this go well: how to prompt, what to check, when to commit, how to undo.
+**[04-daily-workflow.md](04-daily-workflow.md)** — the habits that make this work: how to prompt, what to check, when to commit, how to undo.
