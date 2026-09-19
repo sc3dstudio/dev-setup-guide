@@ -69,8 +69,13 @@ GROUND RULES - follow these in every reply, not just today
 2.  One thing at a time. Do not change things I did not ask about.
 3.  Before anything that deletes, overwrites or moves files, say what you are
     about to do and wait for my yes.
-4.  Take care of Git yourself. Commit your own work in small steps with clear
+4.  Take care of Git yourself, with ONE exception.
+    COMMITTING is yours: commit your own work in small steps, with clear
     messages, and tell me what you committed. Do not wait for me to ask.
+    PUSHING is mine to approve: pushing publishes my work to GitHub, where other
+    people can see it and where it is awkward to take back. Ask me before each
+    push and say in one line what is going out. If I ever tell you to push
+    freely in a project, you may - for that project only.
 5.  Install what you need in order to work properly - runtimes, CLI tools, MCP
     servers, project dependencies. Say what you are installing and why in one
     line, then do it. You do not need my approval for standard tooling. Ask me
@@ -179,17 +184,30 @@ STEP 7 - Propose a first project.
   Not a tutorial and not a toy. Something real but small. Tell me why you picked
   it and what I will have at the end. Then wait for my yes.
 
-STEP 8 - MCP servers. Do this LAST, because it ends our session.
+STEP 8 - Optional extras: MCP servers. Do this LAST, because if I want one,
+  installing it ends our session.
 
   Why it ends the session: ZCode reads MCP servers only when it starts. Nothing
   you do in THIS session can make them available here. You configure them, I
   restart ZCode, and we continue in a new task. If I ask you to use Notion or
   Blender before that restart, remind me of this instead of trying.
 
+  FIRST, ASK ME which of these I want. Do not install either one without an
+  answer from me:
+
+    - notion   - Notion pages and databases. Needs a browser sign-in from me on
+                 first connection, which can only happen after the restart.
+    - blender  - Driving Blender. Only useful if I actually use Blender, and it
+                 also needs a Blender add-on installed.
+
+  If I say no to both, say so plainly and skip the rest of this step: an empty
+  or absent mcp.servers is a normal, working configuration, no restart is
+  needed, and we are done for today. Do not talk me into either one.
+
   My ZCode config is %USERPROFILE%\.zcode\cli\config.json. MCP servers live under
   the NESTED key mcp.servers.
 
-  Rules for editing it:
+  If I said yes to at least one, the rules for editing it are:
     - Back the file up first, to config.json.bak-<timestamp>.
     - Merge. Never replace the file, and never overwrite a server that is
       already configured.
@@ -198,14 +216,9 @@ STEP 8 - MCP servers. Do this LAST, because it ends our session.
     - Check that the file still parses after you write it.
     - You are running INSIDE ZCode, so you cannot edit this file while ZCode is
       closed. Write it now, then have me restart - and plan to verify in the new
-      session, because ZCode may rewrite its config as it exits. See the last
-      bullet below.
-
-  Register what is missing:
-    - notion   - Notion pages and databases. Its first connection needs a browser
-                 sign-in from me, which can only happen after the restart.
-    - blender  - ONLY if I tell you I use Blender. ASK ME first: it also needs a
-                 Blender add-on installed, and many people never open Blender.
+      session, because ZCode may rewrite its config as it exits. See below.
+    - For the notion server, pin the bridge version instead of taking whatever
+      is newest:  mcp-remote@0.14.2. Tell me if you would rather not pin.
 
   Then, before I restart, write me a short handover in your reply - not in a
   file - with:
@@ -234,7 +247,7 @@ Start with STEP 1 now.
 | 5 | Four questions, one at a time — not all at once |
 | 6 | The proposed `AGENTS.md` content, before it writes anything |
 | 7 | One small project idea with a reason, waiting for your go-ahead |
-| 8 | The config backed up and `notion` merged in, then a short handover telling you to restart |
+| 8 | It **asks** whether you want Notion, and whether you use Blender — then configures what you said yes to, and hands over the restart |
 
 **The steps where you are needed: 2, 3, 5, 6, 7 and 8.** Everywhere else it should work on its own. If it stops for approval on a routine install, it has not understood ground rule 5.
 
@@ -243,6 +256,8 @@ Start with STEP 1 now.
 ---
 
 ## After the restart — the new session
+
+**This section only applies if you said yes to Notion or Blender in step 8.** If you said no to both, there is nothing to configure, no restart is needed, and you are already done.
 
 Step 8 ends with you restarting ZCode. That is not busywork, and it is why MCP goes last.
 
@@ -265,7 +280,7 @@ If the list is empty, ZCode rewrote its config as it closed. Tell it to add the 
 List every MCP tool you have, grouped by server name.
 ```
 
-Now `notion` should appear, with its tools. If it does, ask it to list your Notion pages — **the first call opens a browser for you to approve**. That approval is cached, so it only happens once.
+The servers you chose should now appear. If Notion is among them, ask it to list your Notion pages — **the first call opens a browser for you to approve**. That approval is cached, so it only happens once.
 
 **A session started before the install will never see the new tools**, no matter how long it runs or how you rephrase the question. If something you installed is not showing up, the answer is almost always: restart, new task.
 
@@ -284,8 +299,9 @@ Stop it if it does any of these.
 | Complete a browser sign-in for you | Sign-ins are yours. It should hand over, not help |
 | Edit the config without backing it up first | You would have no way back |
 | Replace the config file instead of merging | It holds your model providers and other settings |
-| Install Blender's MCP without asking | It needs a Blender add-on, and you may not use Blender at all |
-| Promise Notion or Blender tools in this session | They cannot work until ZCode restarts |
+| Install a Notion or Blender server without asking you | A server is extra software and extra access. It must ask, and "no" to both is a complete answer |
+| Push your work without asking | Committing is its job; publishing is not. Push is yours to approve |
+| Claim the MCP servers are working, in this session | It cannot know that until after the restart. Verify first |
 | Write `AGENTS.md` before showing you | Step 6 says show first, then wait |
 | Ask all four questions at once | They come one at a time so each gets a real answer |
 | Claim the MCP servers are working, in this session | It cannot know that until after the restart. Verify first |

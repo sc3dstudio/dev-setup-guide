@@ -13,12 +13,23 @@
 
     Exit code is 0 when there is no FAIL, and 1 when there is.
 
+.PARAMETER DevRoot
+    Where your projects live. Defaults to C:\Users\<you>\Dev, which is what the
+    guide suggests. Pass your own path if you put the folder somewhere else,
+    for example on another drive - otherwise a perfectly good setup gets
+    reported as missing.
+
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File .\verify-setup.ps1
+
+.EXAMPLE
+    powershell -ExecutionPolicy Bypass -File .\verify-setup.ps1 -DevRoot "D:\Dev"
 #>
 
 [CmdletBinding()]
-param()
+param(
+    [string]$DevRoot
+)
 
 $script:Pass = 0
 $script:Warn = 0
@@ -150,13 +161,21 @@ if (Get-Command python3 -ErrorAction SilentlyContinue) {
 # ---------------------------------------------------------------------------
 Write-Group 'Dev folder'
 
-$devRoot = Join-Path $env:USERPROFILE 'Dev'
+# The guide lets you put projects anywhere on a local drive, so accept an
+# explicit path. Without it, fall back to the documented default.
+if (-not $DevRoot) {
+    $DevRoot = Join-Path $env:USERPROFILE 'Dev'
+    Write-Host "  info  checking the default location. If you chose another one," -ForegroundColor DarkGray
+    Write-Host "        re-run with:  -DevRoot `"D:\Dev`"" -ForegroundColor DarkGray
+} else {
+    Write-Host "  info  checking the path you gave: $DevRoot" -ForegroundColor DarkGray
+}
 
-if (Test-Path $devRoot) {
-    Add-Pass 'Dev folder exists' $devRoot
+if (Test-Path $DevRoot) {
+    Add-Pass 'Dev folder exists' $DevRoot
 
     $inOneDrive = $false
-    if ($env:OneDrive -and ($devRoot -like "$($env:OneDrive.TrimEnd('\'))*")) {
+    if ($env:OneDrive -and ($DevRoot -like "$($env:OneDrive.TrimEnd('\'))*")) {
         $inOneDrive = $true
     }
     if ($inOneDrive) {
@@ -166,7 +185,7 @@ if (Test-Path $devRoot) {
     }
 
     try {
-        $probe = Join-Path $devRoot '.write-test'
+        $probe = Join-Path $DevRoot '.write-test'
         Set-Content -Path $probe -Value 'x' -ErrorAction Stop
         Remove-Item $probe -Force -ErrorAction SilentlyContinue
         Add-Pass 'Dev folder is writable'
@@ -174,11 +193,11 @@ if (Test-Path $devRoot) {
         Add-Fail 'Dev folder is writable' $_.Exception.Message
     }
 
-    $projects = @(Get-ChildItem $devRoot -Directory -ErrorAction SilentlyContinue |
+    $projects = @(Get-ChildItem $DevRoot -Directory -ErrorAction SilentlyContinue |
                   Where-Object { $_.Name -notlike '_*' -and $_.Name -ne '.git' })
     Write-Host ("  info  {0,-34}  {1}" -f 'Projects in Dev', $projects.Count) -ForegroundColor DarkGray
 } else {
-    Add-Warn 'Dev folder exists' "Not created yet: $devRoot"
+    Add-Warn 'Dev folder exists' "Not created yet: $DevRoot"
 }
 
 # ---------------------------------------------------------------------------

@@ -120,14 +120,14 @@ Your agent knows more about this than you do — that is the point of having one
 | It does this | Because |
 |---|---|
 | Installs the toolchain and ordinary project dependencies | It cannot work properly without them, and `winget` and package managers are built for exactly this |
-| Commits each working step with a clear message | Small commits are the undo button. Waiting for your approval makes them rare and large |
-| Pushes a finished step to your repo | That is your backup. It should happen on its own |
+| Commits each working step with a clear message | Commits are local and reversible. Making every one wait for approval makes them rare and large |
 | Creates folders, files and branches it needs | Routine work, and reversible with Git |
 
 **Say what you are installing and why in one line** — that is the level of reporting you want. Not a permission request.
 
 **Where you do want to be asked:**
 
+- **Pushing to GitHub.** Committing is local; pushing publishes. Say one line about what would go out, and wait for your yes. If you tell it to push freely for one project, that applies to that project only.
 - Anything that needs your **account login, a credential, or money**. Those are yours.
 - Anything that would **overwrite or delete** without a clear way back.
 - Anything that would **change a part of the setup that already works**. "While I was in there" is how a working machine breaks.

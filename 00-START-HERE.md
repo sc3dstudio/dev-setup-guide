@@ -155,11 +155,11 @@ You are set up correctly when all of these are true:
 
 1. `git --version`, `node -v`, `python --version`, `uv --version` and `gh --version` all print a version instead of an error.
 2. ZCode opens, is connected to a model, and answers a simple question.
-3. You have one folder, `C:\Users\<your-name>\Dev`, where all projects live.
+3. You have one folder — `C:\Users\<your-name>\Dev` by default, or wherever you chose — where all projects live.
 4. `gh auth status` says you are logged in to GitHub.
-5. Your agent can list the MCP tools it has, and Blender and Notion appear in the list.
+5. Your agent can list the MCP tools it has. **Blender and Notion only appear here if you asked for them** — an empty list is a normal, working setup.
 
-`scripts/verify-setup.ps1` checks all of this for you and prints a report.
+`scripts/verify-setup.ps1` checks all of this for you and prints a report. If you put your projects somewhere other than the default, pass the path: `.\scripts\verify-setup.ps1 -DevRoot "D:\Dev"`.
 
 ---
 

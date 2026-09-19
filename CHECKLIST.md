@@ -32,7 +32,7 @@ Nine of these fifteen stages are just answering a question.
 
 **Why:** it gives the agent your mouse, keyboard and screen — far wider than editing files in a project, and hard to supervise while you are learning. Nothing here needs it.
 
-## 4. Create your Dev folder
+## 4. Create your Dev folder — command 1 of 2
 
 - [ ] Picked a location: **not** inside OneDrive, **not** in Documents/Desktop/Downloads
 - [ ] Created it
@@ -66,7 +66,7 @@ New-Item -ItemType Directory -Force -Path (Join-Path $DevRoot '_sandbox') | Out-
 
 **This is permanent.** Every commit you ever make carries it.
 
-## 8. GitHub login — the one command you run
+## 8. GitHub login — command 2 of 2
 
 - [ ] Opened PowerShell and ran `gh auth login`
 - [ ] Answered: `GitHub.com` / `HTTPS` / `Yes` / `Login with a web browser`
@@ -106,19 +106,20 @@ New-Item -ItemType Directory -Force -Path (Join-Path $DevRoot '_sandbox') | Out-
 - [ ] You approved it, or named something you would rather build
 - [ ] It committed the work as part of the exercise
 
-## 14. MCP servers — it asks, then you restart
+## 14. Optional extras — it asks, you decide
 
-- [ ] It asked whether you use Blender, and you answered honestly
-- [ ] It backed up `config.json` before editing it
+- [ ] It **asked** whether you want Notion, and whether you use Blender — it installed neither without an answer
+- [ ] You answered. **"No" to both is a complete answer** — then skip to the final verification below
+- [ ] If you said yes to something: it backed up `config.json` before editing it
 - [ ] It gave you a short handover: what it configured, and what to ask next
 - [ ] You **closed ZCode completely** — quit from the tray if it sits there
 - [ ] You opened it again and clicked **New Task**
 
-## 15. The new session — where MCP actually works
+## 15. The new session — only if you asked for Notion or Blender
 
-- [ ] Asked whether `mcp.servers` survived the restart; re-added if it was empty
-- [ ] Asked it to list MCP tools and saw `notion` in the list
-- [ ] Asked it to list Notion pages, and approved the browser sign-in
+- [ ] Asked whether `mcp.servers` survived the restart; had it re-added if the list was empty
+- [ ] Asked it to list MCP tools and saw the servers you chose
+- [ ] If you chose Notion: asked it to list Notion pages, and approved the browser sign-in
 - [ ] It returned real page names
 
 **Remember:** MCP servers and skills are read only when ZCode starts. A task that was already running never sees them. When something you installed does not appear, the answer is restart + new task.
@@ -137,6 +138,12 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-setup.ps1
 
 - [ ] Zero `FAIL` lines
 - [ ] Every `WARN` is understood and accepted (they are optional things)
+
+**If your projects live outside `%USERPROFILE%\Dev`**, pass the path — otherwise a perfectly good setup gets reported as missing:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\verify-setup.ps1 -DevRoot "D:\Dev"
+```
 
 ## Prove it works end to end
 
@@ -164,6 +171,7 @@ Full walkthrough with explanations: [03-first-project.md](03-first-project.md).
 - [ ] I open **one project folder**, not the whole `Dev` folder
 - [ ] I run `git diff` before I accept a step as done
 - [ ] I let the agent commit each working step, and I read what it committed
+- [ ] I approve pushes — the agent asks, because pushing publishes
 - [ ] I let the agent install standard tooling without approving each one
 - [ ] I read permission prompts before approving
 - [ ] I know that `git reset --hard` and `git push --force` destroy work, and I do not run them on an agent's suggestion alone

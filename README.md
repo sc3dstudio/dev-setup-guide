@@ -15,7 +15,7 @@ You do not need to be a developer to use this. You need to be able to copy and p
 | Git, Node.js, Python, uv, GitHub CLI | the basic tools every project needs |
 | ZCode | you have an agent that can read, write and run code for you |
 | A `Dev` folder | all your projects live in one clean place, outside OneDrive |
-| MCP servers | your agent can reach Blender and Notion, not just files |
+| MCP servers, if you want them | your agent can reach Notion or Blender, not just files. Optional, and it asks you first |
 | Skills | your agent learns repeatable jobs instead of you re-explaining them |
 
 At the end you have a working setup, and you know how to check that it still works.
@@ -50,7 +50,7 @@ The shape of it:
 - **Stage 5 — the handover.** You paste the prompt from [START-PROMPT.md](START-PROMPT.md) into a new task.
 - **Stages 6 to 15 — it works, you answer.** The toolchain, Git, GitHub, your instruction file, your first project and the MCP servers are all its job. You answer nine questions, run one command yourself (the GitHub login, which needs your browser), and restart ZCode once.
 
-**Only one command in the whole setup is yours to run** — `gh auth login` in stage 8. Everything else is a click or an answer.
+**There are exactly two commands in the whole setup, and both are yours:** creating your Dev folder in stage 4, and `gh auth login` in stage 8. Everything else is a click or an answer. Both need something only you can provide — a decision about where your projects live, and a browser sign-in.
 
 If you would rather see exactly what the agent will do before you let it, read [02-agent-setup.md](02-agent-setup.md) first. You never need to, but it is there.
 

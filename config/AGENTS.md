@@ -46,7 +46,8 @@
 
 - Commit your own work in small steps, with a message that says what changed and why. Do not wait for me to ask.
 - Tell me what you committed, one line each.
-- Push when a working step is complete, and tell me you did.
+- **Ask before you push.** Committing is local and cheap to undo. Pushing publishes my work to GitHub, where other people may see it and where it is awkward to take back. Say in one line what would go out, then wait for my yes.
+- If I tell you to push freely in a project, you may — for that project only.
 - Never rewrite published history.
 
 ## Commands and terminal

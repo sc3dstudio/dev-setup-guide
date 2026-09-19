@@ -18,8 +18,14 @@
     "Rules that prevent almost every failure:",
     "  - Forward slashes in paths, never backslashes.",
     "  - A comma between entries, none after the last one.",
-    "  - Close ZCode before editing; it rewrites this file on exit.",
-    "",
+    "  - Back the file up, and confirm the change survived a restart.",
+
+    "On the pinned version below: mcp-remote@0.14.2 is deliberate. Without a",
+    "version number, npx downloads whatever is newest each time it starts, so the",
+    "code running on your machine can change without you seeing it. To update,",
+    "change the number in purpose, restart ZCode, and check the server still works.",
+    "See the Security section of reference/mcp-servers.md.",
+
     "Check the npx path on your machine with:  where.exe npx"
   ],
 
@@ -30,7 +36,7 @@
         "command": "C:/Program Files/nodejs/npx.cmd",
         "args": [
           "-y",
-          "mcp-remote",
+          "mcp-remote@0.14.2",
           "https://mcp.notion.com/mcp",
           "--transport",
           "http-only"
@@ -52,7 +58,7 @@
         "command": "C:/Program Files/nodejs/npx.cmd",
         "args": [
           "-y",
-          "mcp-remote",
+          "mcp-remote@0.14.2",
           "https://docs.mcp.cloudflare.com/mcp",
           "--transport",
           "http-only"

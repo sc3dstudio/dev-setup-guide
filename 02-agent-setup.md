@@ -20,22 +20,23 @@ This file has three parts:
 
 ## 1. Before you paste
 
-The agent cannot do these two things, because both need a human at a keyboard.
+Some of this needs a human at a keyboard.
 
-- [ ] **ZCode is installed and open.** See [01-human-setup.md](01-human-setup.md) Step 7.
-- [ ] **A model is connected**, and asking ZCode *"List the files in the current directory"* gives a real answer. See [01-human-setup.md](01-human-setup.md) Step 8.
-- [ ] **Computer Use is switched off.** See the top of [README.md](README.md).
+- [ ] **ZCode is installed and open.** See [01-human-setup.md](01-human-setup.md) **Stage 1**.
+- [ ] **A model is connected**, and asking ZCode *"List the files in the current directory"* gives a real answer. See [01-human-setup.md](01-human-setup.md) **Stage 2**.
+- [ ] **Computer Use is switched off.** See the top of [README.md](README.md), or **Stage 3**.
+- [ ] **A Dev folder exists.** See **Stage 4** — or let the agent create one, and it will ask you where.
 
 Without a connected model there is no agent, and there is nothing to paste a prompt into.
 
-**Also decide this before you start:**
+**The agent will ask you two questions in Phase 6. Both are optional, and "no" to both is a complete answer:**
 
-| Question | Why it matters |
+| Question | What it controls |
 |---|---|
-| Do you use Blender? | If yes, the agent installs the Blender MCP and the Blender add-on. If no, it skips it. |
-| Do you want Notion connected now? | It is optional and can be added later. It needs a browser sign-in from you. |
+| Do you want Notion connected? | The agent can then read and write Notion pages and databases. Needs a browser sign-in from you on first use |
+| Do you use Blender? | Only useful if you actually use Blender. The Blender MCP also needs a Blender add-on installed |
 
-You will be asked these. Have the answers ready.
+An empty MCP list is a normal, working setup. Nothing is broken if you say no to both.
 
 ---
 
@@ -112,28 +113,36 @@ Phase 5 — Clone this repo into Dev
   git clone https://github.com/sc3dstudio/dev-setup-guide.git
   So that the scripts and config examples are available locally.
 
-Phase 6 — ZCode MCP servers
+Phase 6 — ZCode MCP servers (ask first, both are optional)
+  ASK ME which of these I want before installing either. Do not install either
+  one without an answer. "No" to both is a complete answer - if that is my
+  answer, say so plainly and skip the rest of this phase.
+
   ZCode's user config is: C:\Users\<my-name>\.zcode\cli\config.json
   It holds mcp.servers as a NESTED object. MCP servers live at mcp.servers, not at
   the top level.
   - BACK UP the file before editing it, to config.json.bak-<timestamp>.
   - MERGE. Never overwrite servers that are already there.
   - JSON is strict: no trailing commas, no comments, forward slashes in every path.
-  - Server to add: notion
+  - Server to add ONLY IF I say yes to Notion: notion
       command: <full path to npx.cmd, find it with: where.exe npx>
-      args:    -y mcp-remote https://mcp.notion.com/mcp --transport http-only
+      args:    -y mcp-remote@0.14.2 https://mcp.notion.com/mcp --transport http-only
       timeoutMs: 60000
-  - Server to add, ONLY IF I tell you I use Blender: blender-fork
-      Install via the official bootstrap:
+      The version is pinned on purpose. Do not silently take a newer one - a
+      bridge script runs on my machine, so pinning is the safer default. Tell me
+      if you would rather not pin.
+  - Server to add ONLY IF I say yes to Blender: blender-fork
+      This one runs a remote installer, so tell me that before you start it:
         Set-ExecutionPolicy Bypass -Scope Process -Force
         irm https://raw.githubusercontent.com/newo-ether/blender-mcp/main/bootstrap.ps1 | iex
-      This is interactive: it shows a checklist and asks which Blender version and
+      It is interactive: it shows a checklist and asks which Blender version and
       which MCP clients to register. Tell me what it is asking and wait for my input.
       It also installs the Blender add-on. Then find the executable:
         Get-ChildItem "$env:LOCALAPPDATA\BlenderMCP" -Recurse -Filter blender-mcp.exe
       and register that path as the blender-fork command, with env:
         BLENDER_MCP_DISABLE_TELEMETRY = "1"
-    If the installer refuses to run non-interactively, stop and hand it to me.
+      If the installer refuses to run non-interactively, stop and hand it to me.
+      If you cannot tell me what that script does, do not run it.
   - You are running INSIDE ZCode, so you cannot edit this file while ZCode is
     closed. Write it, then have me restart. ZCode may rewrite its config as it
     exits, so plan to VERIFY in the new session and re-add anything that was lost.
@@ -166,7 +175,8 @@ Phase 9 — Report
   that the new task is where they will. Do not tell me something is verified when
   it can only be verified after a restart.
 
-Ask me the Blender and Notion questions now, then begin with Phase 0.
+Ask me the Notion and Blender questions when you reach Phase 6 - both default to
+no, and "no" to both is a complete answer. Begin with Phase 0.
 ```
 
 ---
@@ -177,9 +187,9 @@ This is what the agent above will do. Read it so you can tell if it goes off tra
 
 ### Phase 0 — Recon
 
-Nothing is changed. The agent reports your Windows version, whether `winget` exists, and which tools are already present.
+Nothing is changed yet. The agent reports your Windows version, whether `winget` exists, and which tools are already present.
 
-**Check it:** it should ask you the Blender and Notion questions and show you a recon result *before* installing anything. An agent that starts installing immediately skipped this.
+**Check it:** it should show you a recon result and go straight on to installing. It should **not** pause for your approval to install standard tooling — that is ground rule 5 in the prompt. It should stop and tell you only if something unexpected turns up: `winget` missing, a tool present but broken, or a version old enough to change the plan.
 
 ### Phase 1 — Install tools
 
@@ -207,19 +217,29 @@ The agent starts `gh auth login` and hands over. You complete the browser flow. 
 
 Gets `config/` and `scripts/` onto your machine so the rest can run.
 
-### Phase 6 — MCP servers
+### Phase 6 — MCP servers (both optional, and it asks first)
 
-The agent backs up `config.json`, merges in the servers, and restarts ZCode.
+The agent asks whether you want Notion, and whether you use Blender. **If you say no to both, this phase ends there** — an empty or absent `mcp.servers` is a normal, working configuration, and no restart is needed.
+
+If you say yes to something, it backs up `config.json`, merges in that server, and gives you a handover telling you to restart.
 
 **Check it:** `config.json.bak-<timestamp>` exists next to the original. If the agent edited without a backup, your original config is gone.
 
-**This is the riskiest phase.** The specific trap: `mcp.servers` is a *nested* object.
+**This is the riskiest phase.** Two traps:
+
+**1. The nesting.** `mcp.servers` is a *nested* object:
 
 ```json
 { "mcp": { "servers": { "notion": { ... } } } }
 ```
 
 An agent that writes `"mcpServers"` at the top level, or `"servers"` at the top level, produces a file ZCode silently ignores. See [reference/zcode-config-map.md](reference/zcode-config-map.md).
+
+**2. It installs code from the internet.** The Notion entry runs `npx -y mcp-remote` — that downloads and runs a package every time it starts — and the Blender entry runs a script fetched from a URL and piped straight into PowerShell. Both are normal for MCP servers and both deserve knowing about.
+
+That is why the Notion entry in this guide pins `mcp-remote@0.14.2` instead of taking whatever is newest. **Check that your agent pinned a version, and ask it what the Blender installer does before it runs it.** If it cannot tell you, that is a reason to stop.
+
+The full trust model, and how to update a pinned version deliberately: *Where the code comes from* in [reference/mcp-servers.md](reference/mcp-servers.md).
 
 ### Phase 7 — Skills
 
@@ -254,6 +274,7 @@ If your agent tries any of these, stop it:
 | Delete a config file and write a fresh one | Loses other settings. Merge, and back up first |
 | Disable Windows Defender, the firewall, or a security setting | Fix the actual problem instead |
 | Force-push, or rewrite Git history | Destroys work with no way back |
+| Push to GitHub without asking you | Committing is local and reversible. Pushing publishes, where others can see it and it is awkward to take back |
 | Set `ExecutionPolicy` to `Unrestricted` permanently | The setup only needs `Bypass` for one window, one time |
 | Invent a Git name or email instead of asking you | Every commit you ever make carries that address |
 | Claim the MCP servers or skills are working in the setup session | They load only when ZCode starts. Verified means verified in a **new task** |
@@ -262,11 +283,13 @@ If your agent tries any of these, stop it:
 
 ## 5. After the agent is done
 
+**Steps 1 to 5 apply only if you asked for Notion or Blender.** If you said no to both, there is nothing to configure and no restart is needed — skip to step 6.
+
 **MCP servers and skills are read once, when ZCode starts.** The agent configures them; you restart; they work in the next task. That is why the MCP phase comes last in the runbook — everything that needs the agent still running happens before it.
 
 1. Close ZCode completely — not minimise. Quit it from the system tray if it sits there.
 2. Open it again, and start a **New Task**.
-3. First check the config survived the restart:
+3. Check that the config survived the restart:
 
 ```
 Is mcp.servers still in my config? List what is in it.
@@ -274,17 +297,23 @@ Is mcp.servers still in my config? List what is in it.
 
 If it is empty, ZCode rewrote the file as it closed. Have the agent add the servers again — the second attempt sticks, because the restart has already happened.
 
-4. Run the verification yourself, so you see it with your own eyes:
-   ```powershell
-   powershell -ExecutionPolicy Bypass -File .\scripts\verify-setup.ps1
-   ```
-2. Close ZCode completely and open it again. This is what loads the new MCP servers and skills.
-3. Ask the agent: *"Which MCP tools do you have?"* Blender and Notion should appear.
-4. If Notion is installed, ask: *"List the Notion pages you can see."* The first call opens a browser for you to approve.
-5. Start your first working session with the prompt in **[START-PROMPT.md](START-PROMPT.md)**. That prompt installs nothing — it orients the agent, tells it you are new, and sets up how you two will work together.
-6. Then go to **[03-first-project.md](03-first-project.md)** and build something small.
+4. Ask the agent: *"Which MCP tools do you have?"* The servers you asked for should appear. An empty list is a normal, working setup if you said no to both.
+5. If you asked for Notion, ask: *"List the Notion pages you can see."* The first call opens a browser for you to approve.
+6. Run the verification yourself, so you see it with your own eyes:
 
-**If something is broken**, the agent will have left a report. Compare it with [CHECKLIST.md](CHECKLIST.md) to find the step that did not land, then read [reference/troubleshooting.md](reference/troubleshooting.md).
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\verify-setup.ps1
+```
+
+If your projects live somewhere other than `%USERPROFILE%\Dev`, pass the path so it is not reported as missing:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\verify-setup.ps1 -DevRoot "D:\Dev"
+```
+
+7. Then go to **[03-first-project.md](03-first-project.md)** and build something small.
+
+**If something is broken**, the agent will have left a report. Compare it with [CHECKLIST.md](CHECKLIST.md) to find the stage that did not land, then read [reference/troubleshooting.md](reference/troubleshooting.md).
 
 ---
 

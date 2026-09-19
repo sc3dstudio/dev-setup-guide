@@ -47,7 +47,22 @@ Instead of `command`/`args`, a remote server can be just:
 
 1. **Forward slashes.** `"C:/Program Files/nodejs/npx.cmd"` — not `"C:\Program Files\..."`. A backslash in JSON starts an escape sequence and breaks the file.
 2. **Commas.** Between entries, and none after the last one.
-3. **Close ZCode before editing.** It writes this file on exit and will overwrite your change.
+3. **Back it up, and confirm the change after a restart.** See just below — the rule depends on who is doing the editing.
+
+### Editing this file: who is doing it matters
+
+**You, editing by hand.** Close ZCode first. It writes this file when it exits, so an edit you make while it is running can be overwritten. Then reopen ZCode and start a **new task**.
+
+**An agent running inside ZCode.** It *cannot* close ZCode to edit — it lives in there. So the flow has to be different:
+
+1. The agent writes the file.
+2. It validates the JSON and tells you what it changed.
+3. You close ZCode, reopen it, and start a **new task**.
+4. In that new task, the first thing you do is confirm the servers are still there.
+
+If they are gone, ZCode rewrote its config as it closed. Have the agent add them again — **the second attempt sticks**, because the restart has already happened and nothing will overwrite it.
+
+Either way: **back the file up first**, and treat the change as unconfirmed until a restart has shown it survived.
 
 ---
 
@@ -63,7 +78,7 @@ Lets the agent read and write Notion content, and is how a shared skills library
   "command": "C:/Program Files/nodejs/npx.cmd",
   "args": [
     "-y",
-    "mcp-remote",
+    "mcp-remote@0.14.2",
     "https://mcp.notion.com/mcp",
     "--transport",
     "http-only"
@@ -76,7 +91,7 @@ Lets the agent read and write Notion content, and is how a shared skills library
 |---|---|
 | `npx.cmd` not `npx` | On Windows, MCP clients must start the `.cmd` wrapper. `npx` alone often fails to spawn |
 | `-y` | auto-confirm the package download, so it does not hang on a prompt |
-| `mcp-remote` | a small bridge that speaks stdio to ZCode and HTTP to Notion |
+| `mcp-remote@0.14.2` | the bridge, with the version pinned. Without the number you get whatever is newest, which changes without telling you — see *Where the code comes from* at the end of this file. Bump it deliberately, then restart and check |
 | `--transport http-only` | skips a transport negotiation that can stall on locked-down networks |
 | `timeoutMs: 60000` | Notion is remote. The default is too short for a slow connection |
 
@@ -179,7 +194,7 @@ Read-only documentation search. No account access, so it is safe to add.
   "type": "stdio",
   "command": "C:/Program Files/nodejs/npx.cmd",
   "args": [
-    "-y", "mcp-remote",
+    "-y", "mcp-remote@0.14.2",
     "https://docs.mcp.cloudflare.com/mcp",
     "--transport", "http-only"
   ],
@@ -277,3 +292,20 @@ An MCP server is **code you run**, with the permissions of your user account. It
 - A server that reaches an account (Cloudflare, Hostinger, GitHub) can act as you inside that account. Grant the narrowest access you can.
 - Anything a server sends to a remote service leaves your machine, and may be cached or indexed there. That is the reason telemetry switches exist.
 - Review what a token can do before you put it in an `env` block. Prefer a read-only token over an admin one. If a server only needs to read, give it a token that can only read.
+
+### Where the code comes from, and why it matters
+
+Two things in this guide run code from the internet. Neither is unusual, and both deserve knowing about rather than trusting.
+
+**`npx -y <package>` downloads and runs a package every time it starts.** `-y` means "do not stop to ask me". Without a version, you get whatever is newest at that moment — so a server that worked yesterday can change under you today, and you will not see it happen.
+
+**`irm <url> | iex` downloads a script and executes it.** You cannot read it before it runs, and it can change at the far end without telling you. That is how the Blender MCP installer works.
+
+**What to do about it:**
+
+- **Pin versions where you can.** The `notion` entry in this guide pins `mcp-remote@0.14.2` for exactly this reason. To update, change the number deliberately, restart, and check the server still works. Pinning means you choose when the code changes, rather than finding out afterwards.
+- **Read a script before you pipe it into a shell.** For the Blender installer, open the URL in a browser first and look at it — or download it, read it, then run the local file. Refusing to pipe a remote script straight into a shell is a reasonable instinct, not paranoia.
+- **Know what you are trusting.** `npx` packages come from npm, and anyone can publish there. `mcp-remote` is the widely used Notion bridge, but "widely used" is a social fact, not a guarantee.
+- **Ask the agent what it is about to run.** If it cannot tell you what a package or script does, that is a reason to stop, not to proceed.
+
+**None of this is a reason to avoid MCP.** It is a reason to add servers deliberately, one at a time, rather than approving whatever appears. An install you did not expect is the one worth questioning.

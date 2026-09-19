@@ -2,7 +2,7 @@
 
 Installing tools proves nothing. This file makes you do the whole loop once, on something small, so you have done every part yourself at least one time.
 
-**In real work your agent does most of this for you** — it commits, it pushes, it runs the commands. Do it by hand here, once, so that when the agent reports "I committed and pushed", you know exactly what happened and where to look. That is the whole point of this file.
+**In real work your agent does most of this for you** — it commits, it runs the commands, and it asks your permission before pushing. Do it by hand here, once, so that when the agent reports "I committed this", you know exactly what happened and where to look. That is the whole point of this file.
 
 Do both projects. The first has no code in it at all — it is only about Git and GitHub. The second has code, and shows you what working with an agent actually feels like.
 

@@ -16,7 +16,7 @@ Every stage has the same three lines:
 | **THE AGENT** | what it is doing at that moment, so nothing surprises you |
 | **IT WILL ASK** | have this answer ready before you move on |
 
-**You never have to run a command, except once** — the GitHub login in stage 8, because that one needs an interactive prompt and your browser.
+**There are exactly two commands in this whole script:** creating your Dev folder in stage 4, and the GitHub login in stage 8. Both need something only you can provide — a decision about where your projects live, and a browser sign-in.
 
 ---
 
@@ -29,22 +29,24 @@ Fifteen stages. Nine of them are just answering a question.
 | 1 | Install ZCode | setup |
 | 2 | Set up the DeepSeek provider and model | setup |
 | 3 | Switch off Computer Use | setup |
-| 4 | Create your Dev folder | setup |
+| 4 | Create your Dev folder — *command 1 of 2* | setup |
 | 5 | Paste the start prompt into a new task | the handover |
 | 6 | Click **Yes** if Windows asks for permission | while it works |
 | 7 | Answer: your Git name and email | answer |
-| 8 | Run `gh auth login` and authorize in the browser | action |
+| 8 | Run `gh auth login` and authorize in the browser — *command 2 of 2* | action |
 | 9 | Answer: where your Dev folder is | answer |
 | 10 | Answer: do the working rules match? | answer |
 | 11 | Answer four questions, one at a time | answer |
 | 12 | Approve your `AGENTS.md` | approve |
 | 13 | Approve the first project | approve |
-| 14 | Answer: do you use Blender? Then restart ZCode | answer + action |
-| 15 | In the new task: verify, and approve the Notion sign-in | action |
+| 14 | Answer: do you want Notion? Do you use Blender? Then restart ZCode — **skipped if you say no to both** | answer + action |
+| 15 | In the new task: verify, and approve the Notion sign-in — **only if you asked for Notion** | action |
 
 **Stages 1 to 4 happen before any agent exists.** Nothing is automated there, because there is nothing yet to automate it.
 
 **Stage 5 is the handover.** From stage 6 onward, you are answering, not working.
+
+**You can skip the last two stages entirely.** Notion and Blender are both optional, the agent will ask you, and "no" to both is a complete answer. Nothing is broken by an empty MCP list.
 
 ---
 
@@ -142,7 +144,7 @@ Nothing in this setup needs it. Turn it on later if you want it, once watching t
 
 ---
 
-## Stage 4 — Create your Dev folder
+## Stage 4 — Create your Dev folder (command 1 of 2)
 
 This is where every project will live. You choose the location, because it depends on your machine — which drive has space, and which folders are cloud-synced.
 
@@ -243,7 +245,7 @@ Nothing to answer. This stage is just so you know what the quiet is.
 
 ---
 
-## Stage 8 — GitHub login
+## Stage 8 — GitHub login (command 2 of 2)
 
 **This is the only stage where you run a command yourself.** It cannot be automated: it needs an interactive prompt and a browser sign-in that is yours.
 
@@ -366,30 +368,39 @@ I would rather start with <your idea>. Keep it small enough to finish today.
 
 ---
 
-## Stage 14 — MCP servers, and the restart
+## Stage 14 — Optional extras, and maybe a restart
 
-This is the last stage of the session, and the agent will tell you why: **MCP servers are only read when ZCode starts.** Nothing installed now can work in the session you are in. So it configures them, you restart, and you continue in a new task.
+Both extras here are optional. The agent asks, and **"no" to both is a complete answer** — you then skip the restart and stage 15 entirely.
+
+If you do want one, the agent will tell you why it goes last: **MCP servers are only read when ZCode starts.** Nothing installed now can work in the session you are in. So it configures them, you restart, and you continue in a new task.
 
 **IT WILL ASK**
 
-1. **Do you use Blender?** Answer honestly — if you do not, say no. It only installs the Blender MCP if you say yes, and that one also needs a Blender add-on.
-2. It then asks you to note down a short handover: what it configured, and what to ask in the new task.
+**IT WILL ASK**
+
+1. **Do you want Notion connected?** Optional. It gives the agent access to Notion pages and databases, which is how a shared skills library gets in. Say yes or no — **no is a complete answer.**
+2. **Do you use Blender?** Optional too, and only worth yes if you actually use Blender. That server also needs a Blender add-on installed.
+3. It then asks you to note down a short handover: what it configured, and what to ask in the new task.
+
+**If you say no to both, this stage is over.** There is nothing to configure, no restart is needed, and you are done — the agent should tell you that plainly rather than talking you into either one.
 
 **YOU DO**
 
-1. Answer the Blender question.
+1. Answer the two questions.
 2. Read its short handover. It tells you exactly what to do next.
 3. **Close ZCode completely.** Not minimise — close. If it sits in the system tray, quit it from there.
 4. **Open ZCode again.**
 5. **Click New Task.** Not the old one.
 
-**THE AGENT** — backs up your config, merges the `notion` server into `mcp.servers`, validates the JSON, and writes you the handover. It does not claim the servers work — it cannot know that yet.
+**THE AGENT** — backs up your config, merges in whatever you said yes to, validates the JSON, and writes you the handover. It does not claim the servers work — it cannot know that yet.
 
 **If the config edit goes wrong**, there is a backup next to it: a file named `config.json.bak-<timestamp>`.
 
 ---
 
 ## Stage 15 — The new session
+
+**Only if you said yes to Notion or Blender in stage 14.** If you said no to both, skip this stage — you are already finished.
 
 You are in a fresh task now, and this is where the MCP servers actually become usable.
 
@@ -409,9 +420,9 @@ If the list is empty, ZCode rewrote its config as it closed. Tell it to add the 
 List every MCP tool you have, grouped by server name.
 ```
 
-`notion` should appear, with its tools.
+The servers you asked for should appear. An empty list is correct if you asked for none.
 
-3. **Then sign in to Notion.** Ask it:
+3. **Only if you asked for Notion, sign in.** Ask it:
 
 ```
 List the Notion pages you can see.
@@ -423,7 +434,7 @@ List the Notion pages you can see.
 
 **If it fails**
 
-- **Notion is missing from the tool list.** You are probably in the old task, or ZCode was not fully closed. Close it, reopen, start a new task.
+- **A server is missing from the tool list.** You are probably in the old task, or ZCode was not fully closed. Close it, reopen, start a new task.
 - **Notion is listed but returns nothing.** The browser sign-in was not completed. Ask again and finish the sign-in.
 
 ---
@@ -441,7 +452,7 @@ The agent does all of this. If you find yourself doing it by hand, something has
 | Edit `mcp.servers` in the ZCode config | It backs up, merges and validates. You would only risk breaking the JSON |
 | Write `AGENTS.md` | It drafts from your answers and shows you first |
 | Clone the guide repo | It fetches the files it needs over the network |
-| Commit and push your work | Ground rule 4: it commits each working step and tells you what it did |
+| Commit your work | Ground rule 4: it commits each working step and tells you what it did. It asks before pushing, because pushing publishes |
 | Install skills | Copying a folder into `.agents\skills` is a step, not a decision |
 
 ## The four things that are always yours
