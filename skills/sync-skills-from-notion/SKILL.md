@@ -99,7 +99,7 @@ Skipped:
 Local files that differ and were NOT overwritten:
   my-notes             local edit differs from Notion. Confirm which version wins.
 
-Restart ZCode for the new skills to load.
+Restart ZCode and start a new task for the new skills to load. Skills are read only when ZCode starts, so the task you are in will not see them.
 ```
 
 Always end with the restart reminder. Skills are scanned at startup; a sync alone changes nothing.
@@ -119,6 +119,6 @@ Always end with the restart reminder. Skills are scanned at startup; a sync alon
 |---|---|---|
 | The query returns no rows | The Notion account has no access to that database | Ask the user to check **Share** on the database, or that the page is published |
 | Every row has no `skill` block | The library uses a different format | Show the user the expected format above and ask them to fix one row as a test |
-| A skill does not appear in ZCode after a sync | ZCode was not restarted, or `SKILL.md` is nested one level too deep | Restart ZCode. Check the folder contains `SKILL.md` directly |
+| A skill does not appear in ZCode after a sync | ZCode was not restarted, you are in an old task, or `SKILL.md` is nested one level too deep | Restart ZCode, start a new task. Then check the folder contains `SKILL.md` directly |
 | The frontmatter looks mangled | Notion reformatted the markdown | Ask the user to put the whole skill inside a fenced code block |
 | Tool not available | The `notion` MCP server is not connected | See `reference/mcp-servers.md` in the dev-setup-guide repo |

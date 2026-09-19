@@ -269,9 +269,11 @@ If someone else set up your machine, three things come from them and can be upda
 
 | Thing | Where it lives | How it updates |
 |---|---|---|
-| Skills | `C:\Users\<your-name>\.agents\skills\` | Copy the new folder over the old one |
-| MCP servers | `C:\Users\<your-name>\.zcode\cli\config.json` | They send you a config block; you merge it |
+| Skills | `C:\Users\<your-name>\.agents\skills\` | Copy the new folder over the old one, then restart ZCode and start a new task |
+| MCP servers | `C:\Users\<your-name>\.zcode\cli\config.json` | They send you a config block; you merge it, then restart and start a new task |
 | Project rules | The project's `AGENTS.md` | Comes with the project when you `git pull` |
+
+**Anything loaded at startup needs a restart and a new task.** MCP servers and skills are read once, when ZCode starts. A task that was already running will never see a change — not after a minute, not after a rephrase. Restart, new task, then judge whether it worked.
 
 **Before you overwrite a skill of your own**, check whether you edited it. If you did, copy your version somewhere else first.
 

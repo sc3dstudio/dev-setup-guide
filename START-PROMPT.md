@@ -2,13 +2,14 @@
 
 This is the prompt for your **first session**. It sets the machine up *and* starts you working.
 
-Paste it into ZCode once, after you have installed ZCode and connected a model. It takes care of the rest: the toolchain, your Dev folder, the MCP servers, your instruction file, and one small first project.
+Paste it into ZCode once, after you have installed ZCode, set up a model, and made your Dev folder. It takes care of the rest: the toolchain, Git, GitHub, your instruction file, and one small first project.
 
 **Before you paste it:**
 
-- [ ] **Computer Use is switched off.** See below — do this first.
-- [ ] Setup the DeepSeek Provider and Model
-- [ ] Setup a "Developer" or "Dev" folder wherever you want — e.g. `C:\Users\<your-name>\Dev` or any other local drive.
+- [ ] ZCode is installed and opened
+- [ ] The DeepSeek provider and model are set up — see below
+- [ ] A "Developer" or "Dev" folder exists, wherever you want it — e.g. `C:\Users\<your-name>\Dev` or any other local drive
+- [ ] **Computer Use is switched off** — see below
 
 ---
 
@@ -20,7 +21,7 @@ Computer Use lets the agent drive your whole desktop: move the mouse, type, clic
 
 ---
 
-## Setup DeepSeek Prover and Model
+## Set up the DeepSeek provider and model
 
 **Settings → Model Settings → + Add Provider**
 
@@ -45,7 +46,7 @@ Text [x], Image [x]
 
 ## The prompt
 
-CLick "New Task". You do not need a project folder open — the agent creates what it needs. An empty folder is fine.
+Click **New Task**. You do not need a project folder open — the agent creates what it needs. An empty folder is fine.
 
 Copy everything in the box below, paste it into the chat box, and press `Enter`.
 
@@ -80,8 +81,9 @@ GROUND RULES - follow these in every reply, not just today
 8.  If my request is unclear, ask one question instead of guessing.
 9.  If I ask what something does, answer without code if you can.
 
-Work through the steps in order. Stop wherever I have to answer something, and
-do not start a step before the previous one is finished.
+Work through the steps in order. Stop wherever I have to answer something or do
+something in a browser, and do not start a step before the previous one is
+finished.
 
 STEP 1 - Get the machine ready. Fix what is missing, do not just report it.
 
@@ -101,38 +103,46 @@ STEP 1 - Get the machine ready. Fix what is missing, do not just report it.
   Then show me a table: each tool, its version, and whether you installed it or
   it was already there.
 
-STEP 2 - Give my projects one home.
+STEP 2 - Git identity, then GitHub login. Both need something from me, so expect
+  to stop twice.
 
-  Default: %USERPROFILE%\Dev, with a _sandbox subfolder inside it for throwaway
-  experiments.
+  First my Git identity. Every commit is stamped with a name and an email.
+  ASK ME for both. Do not invent them, and do not guess them from my Windows
+  username. Use the email address on my GitHub account.
+  Then set:
+    git config --global user.name  "<what I tell you>"
+    git config --global user.email "<what I tell you>"
+    git config --global init.defaultBranch main
+    git config --global core.longpaths true
+    git config --global core.autocrlf true
 
-  Check whether my home folder is synced by OneDrive. If it is, say in one
-  sentence why code should not live inside it, and use a path outside OneDrive
-  instead.
+  Then the GitHub login. You cannot do this one for me: it needs an interactive
+  terminal prompt and a browser that only I can complete. So give me the
+  instructions and wait. Ask me to:
+    1. Press the Windows key, type PowerShell, open it
+    2. Run:  gh auth login
+    3. Answer:  GitHub.com  /  HTTPS  /  Yes  /  Login with a web browser
+    4. Copy the one-time code it prints, press Enter, paste the code in the
+       browser, sign in, click Authorize
 
-STEP 3 - MCP servers. This is how you get abilities beyond reading files.
+  Wait for me to tell you I am done. Then run:
+    gh auth setup-git
+    gh auth status
+  and show me the output. If it says I am not logged in, help me work out why
+  rather than asking me to repeat all of it.
 
-  My ZCode config is %USERPROFILE%\.zcode\cli\config.json. MCP servers live under
-  the NESTED key mcp.servers.
+  Never type my password, and never try to complete a browser sign-in for me.
 
-  Rules for editing it:
-    - Back the file up first, to config.json.bak-<timestamp>.
-    - Merge. Never replace the file, and never overwrite a server that is
-      already configured.
-    - JSON is strict: no trailing commas, no comments, and forward slashes in
-      every Windows path.
-    - Ask me to CLOSE ZCode while you edit it. ZCode rewrites this file when it
-      exits, so an edit made while it is open can be lost.
+STEP 3 - Give my projects one home.
 
-  Register what is missing:
-    - notion   - Notion pages and databases. It needs a browser sign-in from me
-                 the first time it connects. Set it up, then tell me exactly
-                 what to click.
-    - blender  - ONLY if I tell you I use Blender, and it also needs a Blender
-                 add-on installed. Ask me before doing this one.
+  I may have already created a Dev folder. ASK ME where it is, and use that path.
+  If I have not made one, suggest %USERPROFILE%\Dev, create it, and put a
+  _sandbox subfolder inside it for throwaway experiments.
 
-  Then: ask me to reopen ZCode, and confirm with me that the servers connected.
-  If you cannot check that yourself, tell me how to check it.
+  Check whether that folder sits inside OneDrive. If it does, say in one sentence
+  why code should not live there - node_modules and .git are thousands of small
+  files and OneDrive syncs and can corrupt them - and propose a path outside
+  OneDrive. Do not move anything without my yes.
 
 STEP 4 - Read the guide this machine was set up with.
 
@@ -164,10 +174,49 @@ STEP 7 - Propose a first project.
 
   Suggest ONE small thing we can build together in under 30 minutes, inside my
   Dev folder, that teaches me the loop: you change something, I check it, we
-  commit it.
+  commit it. Committing it is part of the exercise, so do not skip that.
 
   Not a tutorial and not a toy. Something real but small. Tell me why you picked
   it and what I will have at the end. Then wait for my yes.
+
+STEP 8 - MCP servers. Do this LAST, because it ends our session.
+
+  Why it ends the session: ZCode reads MCP servers only when it starts. Nothing
+  you do in THIS session can make them available here. You configure them, I
+  restart ZCode, and we continue in a new task. If I ask you to use Notion or
+  Blender before that restart, remind me of this instead of trying.
+
+  My ZCode config is %USERPROFILE%\.zcode\cli\config.json. MCP servers live under
+  the NESTED key mcp.servers.
+
+  Rules for editing it:
+    - Back the file up first, to config.json.bak-<timestamp>.
+    - Merge. Never replace the file, and never overwrite a server that is
+      already configured.
+    - JSON is strict: no trailing commas, no comments, and forward slashes in
+      every Windows path.
+    - Check that the file still parses after you write it.
+    - You are running INSIDE ZCode, so you cannot edit this file while ZCode is
+      closed. Write it now, then have me restart - and plan to verify in the new
+      session, because ZCode may rewrite its config as it exits. See the last
+      bullet below.
+
+  Register what is missing:
+    - notion   - Notion pages and databases. Its first connection needs a browser
+                 sign-in from me, which can only happen after the restart.
+    - blender  - ONLY if I tell you I use Blender. ASK ME first: it also needs a
+                 Blender add-on installed, and many people never open Blender.
+
+  Then, before I restart, write me a short handover in your reply - not in a
+  file - with:
+    1. what you configured, and the exact path you changed
+    2. what I do now: close ZCode, reopen it, start a new task
+    3. what to ask you in that new task, to check each server came up
+
+  And tell me this, in one line, so the next session fixes it if needed: if
+  ZCode rewrote its config on exit and the servers are gone, the new session
+  should add them again - the second attempt sticks, because by then the
+  restart has already happened.
 
 Start with STEP 1 now.
 ```
@@ -179,16 +228,48 @@ Start with STEP 1 now.
 | Step | You should see |
 |---|---|
 | 1 | Missing tools installed via winget, then a table of versions. Nothing is merely reported — gaps get closed. |
-| 2 | A `Dev` folder, and a straight answer about OneDrive |
-| 3 | Your config backed up, `notion` added, the file validated, and a request to close and reopen ZCode |
+| 2 | It **asks you** for your Git name and email, then hands you a browser flow for GitHub, then shows `gh auth status` |
+| 3 | It asks where your `Dev` folder is, and gives a straight answer about OneDrive |
 | 4 | Five bullet points about how to work together, and a question back to you |
 | 5 | Four questions, one at a time — not all at once |
 | 6 | The proposed `AGENTS.md` content, before it writes anything |
 | 7 | One small project idea with a reason, waiting for your go-ahead |
+| 8 | The config backed up and `notion` merged in, then a short handover telling you to restart |
 
-**Steps 1 and 3 are the ones to watch.** If step 1 only lists what is missing and installs nothing, the agent has not followed the prompt — tell it to install them. If step 3 edits the config while ZCode is open, or without a backup, stop it.
+**The steps where you are needed: 2, 3, 5, 6, 7 and 8.** Everywhere else it should work on its own. If it stops for approval on a routine install, it has not understood ground rule 5.
 
-**You will be asked twice to close and reopen ZCode.** That is not busywork: MCP servers and skills are only read at startup, and ZCode overwrites its config on exit.
+**Two things to watch.** In step 1, if it only *lists* what is missing and installs nothing, it has not followed the prompt. In step 8, if it edits the config without backing it up first, or tells you the servers already work, stop it — it cannot know that yet.
+
+---
+
+## After the restart — the new session
+
+Step 8 ends with you restarting ZCode. That is not busywork, and it is why MCP goes last.
+
+**MCP servers are read once, when ZCode starts.** So:
+
+1. Close ZCode.
+2. Open it again.
+3. Start a **New Task** — not the old one.
+4. First, ask it to confirm the servers are still configured:
+
+```
+Is mcp.servers in my ZCode config still what you wrote? List the servers in it.
+```
+
+If the list is empty, ZCode rewrote its config as it closed. Tell it to add the servers again. **The second attempt sticks**, because the restart has already happened.
+
+5. Then ask what the agent's handover told you to ask, usually:
+
+```
+List every MCP tool you have, grouped by server name.
+```
+
+Now `notion` should appear, with its tools. If it does, ask it to list your Notion pages — **the first call opens a browser for you to approve**. That approval is cached, so it only happens once.
+
+**A session started before the install will never see the new tools**, no matter how long it runs or how you rephrase the question. If something you installed is not showing up, the answer is almost always: restart, new task.
+
+The same is true of skills.
 
 ---
 
@@ -199,13 +280,15 @@ Stop it if it does any of these.
 | It should not | Why |
 |---|---|
 | Report missing tools and stop there | Step 1 says fix, not report |
-| Edit the ZCode config while ZCode is running | ZCode overwrites it on exit — the edit is lost |
+| Invent a Git name or email | Every commit you ever make carries it. It must ask |
+| Complete a browser sign-in for you | Sign-ins are yours. It should hand over, not help |
 | Edit the config without backing it up first | You would have no way back |
 | Replace the config file instead of merging | It holds your model providers and other settings |
 | Install Blender's MCP without asking | It needs a Blender add-on, and you may not use Blender at all |
+| Promise Notion or Blender tools in this session | They cannot work until ZCode restarts |
 | Write `AGENTS.md` before showing you | Step 6 says show first, then wait |
 | Ask all four questions at once | They come one at a time so each gets a real answer |
-| Skip to building | Step 7 ends with a proposal, not an action |
+| Claim the MCP servers are working, in this session | It cannot know that until after the restart. Verify first |
 
 ---
 
@@ -213,11 +296,14 @@ Stop it if it does any of these.
 
 | Symptom | What to do |
 |---|---|
-| It asks permission for every single install | Tell it: *"Ground rule 5 — standard tooling is yours to install, just say what you are doing in one line."* |
+| It asks permission for every small thing | Tell it: *"Ground rule 5 — standard tooling is yours to install, just say what you are doing in one line."* |
+| It picks a Git email for you | Stop it and give the right one. It is baked into every commit |
+| The GitHub browser flow does not open | The terminal prints a URL. Paste it into your browser by hand; the code still works |
 | It says a tool is missing although you know it is installed | It checked in the shell it installed from, before refreshing PATH. Tell it to open a new shell or re-read PATH, then check again. |
 | Everything in the config disappeared | The JSON broke. Restore the newest `config.json.bak-*` next to it. |
-| Notion shows as connected but returns nothing | The browser sign-in was not finished. Ask it to list Notion pages — a browser should open. |
-| It stops at step 3 and waits | Expected. Reopen ZCode, then tell it to continue with step 4. |
+| After the restart, the servers you added are gone | ZCode rewrote its config on exit. Add them again — the second attempt sticks, because the restart already happened |
+| Notion does not appear after the restart | You are probably in the old task, or ZCode was not fully closed. Close it, reopen, start a new task. |
+| Notion appears but returns nothing | The browser sign-in was not finished. Ask it to list Notion pages — a browser should open. |
 
 More: [reference/troubleshooting.md](reference/troubleshooting.md).
 
@@ -227,9 +313,9 @@ More: [reference/troubleshooting.md](reference/troubleshooting.md).
 
 Two problems, one paste.
 
-**A fresh agent does not know who you are.** Not that you are new to agents, not what you want to build, not how much explanation you want. Left alone it assumes an experienced developer and behaves accordingly — terse answers, unexplained jargon, large changes. The ground rules and steps 4 to 6 fix that.
+**A fresh agent does not know who you are.** Not that you are new to agents, not what you want to build, not how much explanation you want. Left alone it assumes an experienced developer and behaves accordingly — terse answers, unexplained jargon, large changes. The ground rules, and steps 4 to 6, fix that.
 
-**A fresh machine is not a working machine.** Something is always missing, and an agent that only *reports* a missing tool has not done the job. Step 1 and step 3 make it install and configure, which is what you actually want an agent for.
+**A fresh machine is not a working machine.** Something is always missing, and an agent that only *reports* a missing tool has not done the job. Steps 1 to 3 make it install and configure, and step 8 adds the MCP servers — which is what you actually want an agent for.
 
 Step 6 is the part that lasts. The ground rules you paste today get written into `AGENTS.md`, which is loaded into every future session — so you never paste them again.
 
@@ -249,12 +335,12 @@ Worth changing:
 
 ## The setup-only prompt
 
-If you have already set up the working relationship and only want the machine configured — a second machine, say — use the prompt in [02-agent-setup.md](02-agent-setup.md) instead. It covers steps 1 to 3 above with much more detail, and stops there.
+If your working rules are already in place and you only want the machine configured — a second machine, say — use the prompt in [02-agent-setup.md](02-agent-setup.md) instead. It covers the machine setup with much more detail and stops before the MCP step.
 
 ---
 
 ## Next
 
-**[03-first-project.md](03-first-project.md)** — a full walkthrough of building something small, end to end, with every command explained. Do that before your own project if you have not already.
+**[03-first-project.md](03-first-project.md)** — a full walkthrough of building something small, end to end, with every command explained.
 
 **[04-daily-workflow.md](04-daily-workflow.md)** — the habits that make this work: how to prompt, what to check, when to commit, how to undo.

@@ -224,6 +224,8 @@ It authenticates with a Hostinger API token that you create in hPanel. The token
 
 ## Testing a server
 
+> **First, the rule that catches everyone:** MCP servers are read **once, when ZCode starts**. After adding or changing a server you must restart ZCode and start a **new task**. A session that was already running will never see the new tools, no matter how you rephrase the request. If a server "does not work", check this before anything else.
+
 ### 1. Is it connected?
 
 **Settings → MCP** in ZCode. Each server shows a state. Anything other than connected needs fixing.
@@ -258,9 +260,9 @@ For Blender, have Blender open with a file loaded first. For Notion, expect a br
 | Server missing from the list | Broken JSON in `config.json`, so ZCode ignored the file | Validate the JSON (command in [zcode-config-map.md](zcode-config-map.md)) |
 | Server listed, state is error | Wrong `command` path | `where.exe npx`, or find the `.exe` and copy its exact path |
 | Everything worked, then all servers vanished | An edit broke the JSON | Restore the newest `config.json.bak-*` and redo the edit carefully |
-| Server connects but returns nothing | Not signed in | Complete the browser sign-in, then restart ZCode |
+| Server connects but returns nothing | Not signed in, or you are in an old task | Complete the browser sign-in, then restart ZCode and start a new task |
 | Server times out | Network or a slow remote | Raise `timeoutMs` to `120000` |
-| Agent calls the wrong Blender tool | Two Blender servers registered | Keep one, remove the other, restart ZCode |
+| Agent calls the wrong Blender tool | Two Blender servers registered | Keep one, remove the other, restart ZCode and start a new task |
 | MCP server in a project folder is ignored | `~\.agents\mcp.json` used while `.zcode` config exists | See the fallback trap in [zcode-config-map.md](zcode-config-map.md) |
 | Blender tools fail though the server is connected | Blender not running, or add-on not enabled | Start Blender, enable the BlenderMCP add-on in Preferences |
 | Config changes do nothing | ZCode was open while editing | Close ZCode, edit, save, reopen |

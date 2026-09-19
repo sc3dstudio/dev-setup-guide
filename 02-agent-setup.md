@@ -134,14 +134,18 @@ Phase 6 — ZCode MCP servers
       and register that path as the blender-fork command, with env:
         BLENDER_MCP_DISABLE_TELEMETRY = "1"
     If the installer refuses to run non-interactively, stop and hand it to me.
-  - ZCode must be CLOSED while you edit this file, or it overwrites your change on exit.
-    Tell me to close it, then tell me to reopen it.
+  - You are running INSIDE ZCode, so you cannot edit this file while ZCode is
+    closed. Write it, then have me restart. ZCode may rewrite its config as it
+    exits, so plan to VERIFY in the new session and re-add anything that was lost.
 
 Phase 7 — Skills
   Copy the repo's skills\* folders into C:\Users\<my-name>\.agents\skills\
   The rule: each skill is a folder directly containing a SKILL.md.
   A layout like skills\name\name\SKILL.md will NOT be discovered.
   List what you installed.
+
+  Skills are read only when ZCode starts, exactly like MCP servers. Do not claim
+  they are working in this session. They are working when a NEW task can use them.
 
 Phase 8 — Verify
   Run: powershell -ExecutionPolicy Bypass -File .\scripts\verify-setup.ps1
@@ -154,7 +158,13 @@ Phase 9 — Report
     - every file you created or changed, with its full path,
     - anything you changed a backup of,
     - the exact things that still need a human (browser logins, purchases),
+    - what I should do now: close ZCode, reopen it, start a NEW task,
+    - what to ask you in that new task to check the MCP servers came up,
     - one suggested next step.
+
+  Be explicit that the MCP servers and skills cannot work in this session, and
+  that the new task is where they will. Do not tell me something is verified when
+  it can only be verified after a restart.
 
 Ask me the Blender and Notion questions now, then begin with Phase 0.
 ```
@@ -246,12 +256,25 @@ If your agent tries any of these, stop it:
 | Force-push, or rewrite Git history | Destroys work with no way back |
 | Set `ExecutionPolicy` to `Unrestricted` permanently | The setup only needs `Bypass` for one window, one time |
 | Invent a Git name or email instead of asking you | Every commit you ever make carries that address |
+| Claim the MCP servers or skills are working in the setup session | They load only when ZCode starts. Verified means verified in a **new task** |
 
 ---
 
 ## 5. After the agent is done
 
-1. Run the verification yourself, so you see it with your own eyes:
+**MCP servers and skills are read once, when ZCode starts.** The agent configures them; you restart; they work in the next task. That is why the MCP phase comes last in the runbook — everything that needs the agent still running happens before it.
+
+1. Close ZCode completely — not minimise. Quit it from the system tray if it sits there.
+2. Open it again, and start a **New Task**.
+3. First check the config survived the restart:
+
+```
+Is mcp.servers still in my config? List what is in it.
+```
+
+If it is empty, ZCode rewrote the file as it closed. Have the agent add the servers again — the second attempt sticks, because the restart has already happened.
+
+4. Run the verification yourself, so you see it with your own eyes:
    ```powershell
    powershell -ExecutionPolicy Bypass -File .\scripts\verify-setup.ps1
    ```
@@ -267,6 +290,8 @@ If your agent tries any of these, stop it:
 
 ## 6. Reusing this prompt
 
-This prompt works on any Windows machine, not just this one. It is the same six steps every time.
+This prompt works on any Windows machine, not just this one. It is the same phases every time.
 
 When you set up a second machine, come back to this file and paste the same prompt. That is the whole point of writing the setup down instead of doing it from memory.
+
+**Its place in the bigger picture:** this file is the agent's half. Your half — the actions only you can take, and the questions this prompt will make the agent ask you — is [01-human-setup.md](01-human-setup.md). If you are setting up a machine from scratch, read that one and let it drive. This file is the detail behind the prompt.

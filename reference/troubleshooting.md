@@ -9,7 +9,7 @@ Symptom → cause → fix. Find your symptom, try the fix, and if it does not wo
 Ask these before anything else. They isolate the failure to one layer.
 
 1. **Did you close and reopen the terminal?** An installed tool is invisible to a terminal that was already open. This alone accounts for a large share of "the install did not work".
-2. **Did you restart ZCode?** MCP servers and skills are loaded at startup. A config change and a skill copy do nothing until ZCode restarts.
+2. **Did you restart ZCode and start a new task?** MCP servers and skills are read only when ZCode starts. A config change and a skill copy do nothing until you do both — a session that was already running never sees them, no matter how long it runs.
 3. **Did the last thing work?** If yes, the problem is in the change you just made. Undo it and confirm the good state returns, then redo the change one piece at a time.
 
 ---
@@ -162,7 +162,7 @@ Copy the exact path into the config, with forward slashes.
 
 ### A server connects but returns nothing
 
-For Notion: the browser sign-in has not been completed. Restart ZCode and ask the agent to list pages — a browser should open. The approval is cached in `~\.mcp-auth\mcp-remote-v1\`.
+For Notion: either the browser sign-in was never completed, or you are in a task that started before the server was added. Restart ZCode, start a **new task**, and ask the agent to list pages — a browser should open. The approval is cached in `~\.mcp-auth\mcp-remote-v1\`.
 
 ### A server times out
 
@@ -184,7 +184,7 @@ Three things must all be true:
 
 ### The agent calls the wrong Blender tool
 
-Two Blender servers are registered at once. Keep one, delete the other, restart ZCode.
+Two Blender servers are registered at once. Keep one, delete the other, restart ZCode and start a new task.
 
 ### How many tools does the agent actually have?
 
@@ -220,7 +220,7 @@ Then ask the agent which copy it would load for that name. See [skills-and-plugi
 
 ### I edited a skill and nothing changed
 
-You edited a shadowed copy, or you did not restart ZCode. Both are answered by the command above plus a restart.
+You edited a shadowed copy, or you did not restart ZCode and start a new task. Both are answered by the command above plus a restart.
 
 ---
 

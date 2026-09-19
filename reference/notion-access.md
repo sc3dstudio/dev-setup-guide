@@ -148,7 +148,7 @@ there. Then list what you wrote and what you skipped.
 
 There is a ready-made skill for this in this repo: [`skills/sync-skills-from-notion`](../skills/sync-skills-from-notion/SKILL.md). Install it, set your database address in it once, and afterwards you only say *"sync my skills from Notion"*.
 
-**Restart ZCode after a sync.** Skills are loaded at startup.
+**Restart ZCode and start a new task after a sync.** Skills are read only when ZCode starts, so the task you are in will not pick them up.
 
 **Before you overwrite, be aware:** a sync replaces local files. If you edited a skill locally, that edit is gone. Either edit in Notion and treat it as the source, or keep local skills out of the library's slug list.
 
@@ -161,7 +161,7 @@ There is a ready-made skill for this in this repo: [`skills/sync-skills-from-not
 | Stop one person reading a page | Notion → **Share** → remove their guest entry |
 | Kill a public link | **Share → Publish** → unpublish |
 | Revoke your own agent's access | Delete `~\.mcp-auth\mcp-remote-v1\`, or revoke the connection in Notion's own settings under **Settings → Connections** |
-| Stop the agent reaching Notion at all | Remove the `notion` entry from `mcp.servers` in `config.json` and restart ZCode |
+| Stop the agent reaching Notion at all | Remove the `notion` entry from `mcp.servers` in `config.json`, then restart ZCode and start a new task |
 
 Removing a guest takes effect for their account immediately. Their agent will return nothing for that database on its next query.
 
@@ -171,7 +171,7 @@ Removing a guest takes effect for their account immediately. Their agent will re
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `notion` connected but every query returns nothing | The browser sign-in was never completed | Restart ZCode, ask the agent to list pages — a browser should open |
+| `notion` connected but every query returns nothing | The browser sign-in was never completed, or you are in an old task | Restart ZCode, start a new task, ask the agent to list pages — a browser should open |
 | Sign-in keeps being requested | The cached approval was deleted or expired | Sign in again; it will cache for next time |
 | Agent cannot find a database it used to see | Access was removed, or the page was moved | Check **Share** on that page |
 | Agent finds the page but the content looks wrong | Notion reformatted the markdown | Keep the skill in a fenced code block, or move the source of truth to Git |

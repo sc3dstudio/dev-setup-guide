@@ -103,7 +103,7 @@ Get-ChildItem "$env:USERPROFILE\.agents\skills" -Recurse -Filter SKILL.md |
   Select-Object -ExpandProperty FullName
 ```
 
-Then **restart ZCode** — skills are scanned at startup — and check **Settings → Skills**.
+Then **restart ZCode and start a new task** — skills are scanned at startup, so a task that was already running will not see the new skill — and check **Settings → Skills**.
 
 ### From a plugin
 
@@ -245,7 +245,7 @@ If the person is writing skills in Notion rather than in Git, see [notion-access
 Work down this list:
 
 1. **Is `SKILL.md` directly inside the skill folder?** Not one level deeper. This is the most common cause.
-2. **Did you restart ZCode?** Skills load at startup.
+2. **Did you restart ZCode and start a new task?** Skills load at startup. A task that was already running never sees a newly copied skill.
 3. **Is the description a real trigger?** If it does not contain the words you actually say, the agent will not match it. Rewrite it as *"Use when the user asks to ..."* and include the phrasing you use.
 4. **Is it shadowed?** A same-named skill in a higher-priority location wins. Ask the agent which copy it would load.
 5. **Is the frontmatter valid?** Exactly `---` on the first line, `name:` and `description:`, `---` to close. No indentation, no missing dashes.

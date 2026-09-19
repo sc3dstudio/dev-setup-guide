@@ -30,47 +30,35 @@ At the end you have a working setup, and you know how to check that it still wor
 
 Computer Use lets the agent drive your whole desktop: move the mouse, type, click, read the screen. That is a much bigger permission than editing files in a project folder, and it is hard to supervise while you are still learning what the agent does and how it reports back.
 
-Nothing in this guide needs it. Turn it on later if you want it, once watching the agent work feels routine.
-
-You can confirm it is off in your config file — `plugins.enabledPlugins` should show:
-
-```json
-"computer-use@zcode-plugins-official": false
-```
-
-Also on the list in [CHECKLIST.md](CHECKLIST.md), as step 10.
+Nothing in this guide needs it. Turn it on later if you want it, once watching the agent work feels routine. It is stage 3 in [01-human-setup.md](01-human-setup.md).
 
 ---
 
-## Two ways to do this — pick one
+## How the setup runs
 
-The steps are the same either way. The difference is who does them.
+**One chronological script, two roles.** You do not choose between them — you do your part, and the agent does everything else.
 
-### Track A — you do it by hand
+| Your part | The agent's part |
+|---|---|
+| **[01-human-setup.md](01-human-setup.md)** — fifteen stages, and nine of them are just answering a question | **[START-PROMPT.md](START-PROMPT.md)** — the prompt you paste at stage 5. [02-agent-setup.md](02-agent-setup.md) is the detail behind it |
 
-Follow **[01-human-setup.md](01-human-setup.md)**.
+Read **[01-human-setup.md](01-human-setup.md)** and do what it says. That file contains everything you personally must do, and nothing else.
 
-You run every command yourself. Slower, but you will understand what is on your machine and why.
+The shape of it:
 
-**Choose this if** you have never installed a development tool, or you want to know what each piece is before you trust an agent with it.
+- **Stages 1 to 4 — before the agent exists.** You install ZCode, set up the model, switch off Computer Use, and create your Dev folder. Nothing is automated there, because there is nothing yet to automate it.
+- **Stage 5 — the handover.** You paste the prompt from [START-PROMPT.md](START-PROMPT.md) into a new task.
+- **Stages 6 to 15 — it works, you answer.** The toolchain, Git, GitHub, your instruction file, your first project and the MCP servers are all its job. You answer nine questions, run one command yourself (the GitHub login, which needs your browser), and restart ZCode once.
 
-### Track B — your agent does it
+**Only one command in the whole setup is yours to run** — `gh auth login` in stage 8. Everything else is a click or an answer.
 
-Follow **[START-PROMPT.md](START-PROMPT.md)**.
-
-You install ZCode and connect a model. Then you paste one prompt, and the agent installs the toolchain, creates your `Dev` folder, configures the MCP servers, writes your instruction file, and proposes a small first project.
-
-**Choose this if** you want to get to building quickly, or you are setting up a second machine.
-
-The detailed runbook behind that prompt — what the agent does at each step, and where it must stop and wait for you — is [02-agent-setup.md](02-agent-setup.md). You do not need to read it first, but it is what to check against when something looks off.
-
-> Both tracks end in the same place and use the same script, `scripts/setup-windows.ps1`. Track B is Track A with the agent holding the keyboard.
+If you would rather see exactly what the agent will do before you let it, read [02-agent-setup.md](02-agent-setup.md) first. You never need to, but it is there.
 
 ---
 
-## After the setup — both tracks
+## After the setup
 
-Do **[03-first-project.md](03-first-project.md)**. It builds something small end to end, with every command explained, so you have done the whole loop once: the agent changes something, you check it, you commit it.
+Once you are through stage 15 and the Notion sign-in is done, do **[03-first-project.md](03-first-project.md)**. It builds something small end to end, with every command explained, so you have done the whole loop once: the agent changes something, you check it, you commit it.
 
 Then read **[04-daily-workflow.md](04-daily-workflow.md)** — how to prompt well, what to check before you trust a change, when to commit, and how to undo.
 
@@ -89,16 +77,18 @@ Then read **[04-daily-workflow.md](04-daily-workflow.md)** — how to prompt wel
 
 ---
 
-## The two things you must do yourself
+## The four things that are always yours
 
-Almost everything here is automated. Two steps cannot be, because they need a human:
+Almost everything here is automated. Four things cannot be, because they need a human:
 
 1. **Installing ZCode** — it is a normal Windows program with a setup wizard. You click through it.
-2. **Logging in** — to your model provider, to GitHub, and to Notion. Each one opens a browser and asks you to sign in and press "Allow".
+2. **Setting up the model provider** — your API key, your account.
+3. **Every browser sign-in** — GitHub, Notion. Each opens a browser and asks you to sign in and press "Allow".
+4. **Decisions** — where your projects live, what language the agent answers in, what to build.
 
 An agent is not allowed to do these for you, and you should not let one. If an agent offers to type your password, stop.
 
-Everything else — the toolchain, the MCP servers, the config, the skills — an agent can and should do for you.
+Everything else — the toolchain, the Dev folder, the MCP configuration, the skills, and your commits — an agent can and should do for you.
 
 ---
 
@@ -117,10 +107,10 @@ Everything else — the toolchain, the MCP servers, the config, the skills — a
 
 ```
 README.md                     you are here
-START-PROMPT.md               Track B — the one prompt you paste
+01-human-setup.md             YOUR part — the role script. Start here
+START-PROMPT.md               the prompt you paste at stage 5
 00-START-HERE.md              plain-word explanation of every piece
-01-human-setup.md             Track A — do it by hand
-02-agent-setup.md             the runbook behind the prompt
+02-agent-setup.md             the agent's part, in detail
 03-first-project.md           build a small thing to prove it works
 04-daily-workflow.md          how to actually work, day to day
 CHECKLIST.md                  tick-box list

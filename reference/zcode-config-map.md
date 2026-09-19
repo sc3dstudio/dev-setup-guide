@@ -149,7 +149,7 @@ If a key does get committed, treat it as public and rotate it. Deleting the comm
 
 ## Editing config safely
 
-1. **Close ZCode first.** ZCode writes `config.json` when it exits. Editing while it is open means your change can be overwritten.
+1. **Back it up, and verify after a restart.** ZCode may rewrite `config.json` when it exits, so treat any edit as provisional until a restart has confirmed it. That is exactly why the setup has you check `mcp.servers` in the new session, and re-add anything that did not survive. You cannot avoid this by closing ZCode first — an agent running inside ZCode cannot edit the file while ZCode is closed.
 2. **Back up before you edit.** One command:
    ```powershell
    Copy-Item "$env:USERPROFILE\.zcode\cli\config.json" `
@@ -170,7 +170,7 @@ If a key does get committed, treat it as public and rotate it. Deleting the comm
 
 Work down this list:
 
-1. **Did you restart ZCode?** Skills and MCP servers are loaded at startup.
+1. **Did you restart ZCode and start a new task?** Skills and MCP servers are read only when ZCode starts. A session that was already running never picks them up.
 2. **Is the file valid JSON?** Run the validation command above.
 3. **Are you editing the file that wins?** For MCP, user scope beats workspace. For skills, `~\.zcode\skills` beats `~\.agents\skills` beats plugins.
 4. **Is the key name right?** `mcp.servers` in `.zcode`, but `mcpServers` in `.agents\mcp.json`.

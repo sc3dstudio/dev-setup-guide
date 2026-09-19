@@ -366,7 +366,7 @@ Write-Host $rule -ForegroundColor DarkGray
 if ($script:Fail -eq 0) {
     Write-Host ''
     Write-Host '  Everything required is in place.' -ForegroundColor Green
-    Write-Host '  If you have not done it yet, restart ZCode so new MCP servers and skills load.' -ForegroundColor DarkGray
+    Write-Host '  If you have not done it yet, restart ZCode and start a NEW task, so new MCP servers and skills load.' -ForegroundColor DarkGray
     Write-Host ''
     exit 0
 }

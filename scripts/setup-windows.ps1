@@ -625,7 +625,7 @@ if ($SkipConfig) {
                         Write-Note "Restored from $backup"
                     }
 
-                    Write-Note 'Close ZCode and open it again, so it picks up the new servers.'
+                    Write-Note 'Close ZCode, open it again, and start a NEW task, so it picks up the new servers.'
                 }
             }
         } else {
@@ -685,7 +685,7 @@ if (Test-Path $repoSkills) {
     Write-Note "No skills folder in this repo, so nothing to install."
 }
 
-Write-Note 'Restart ZCode, then check Settings -> Skills.'
+Write-Note 'Restart ZCode and start a NEW task, then check Settings -> Skills.'
 
 # ---------------------------------------------------------------------------
 # Summary
@@ -710,7 +710,7 @@ Write-Host ''
 Write-Host '  Still needs a human:' -ForegroundColor Cyan
 Write-Host '    1. Install ZCode if it is not installed, and connect a model.' -ForegroundColor Gray
 Write-Host '    2. Log in to GitHub:  gh auth login   then   gh auth setup-git' -ForegroundColor Gray
-Write-Host '    3. Close ZCode and reopen it, so new MCP servers and skills load.' -ForegroundColor Gray
+Write-Host '    3. Close ZCode, reopen it, and start a NEW task, so new MCP servers and skills load.' -ForegroundColor Gray
 Write-Host '    4. Approve the Notion sign-in in the browser on first use.' -ForegroundColor Gray
 Write-Host '    5. Check everything:  .\scripts\verify-setup.ps1' -ForegroundColor Gray
 Write-Host ''
